@@ -124,8 +124,8 @@ if __name__=="__main__":
           
     # File import 
     file_import = parser.add_mutually_exclusive_group(required = True)          
-    file_import.add_argument("-f", "--filenames", nargs = "*", default = None)
-    file_import.add_argument("-b", "--batch", nargs= 1, default = None) 
+    file_import.add_argument("-f", "--filenames", nargs = "+", default = None)
+    file_import.add_argument("-F", "--batch", nargs= 1, default = None) 
     
     parser.add_argument("-s", "--subseq", required = True)
     parser.add_argument("-w", "--window", default = 0)
@@ -152,8 +152,11 @@ if __name__=="__main__":
     
     
     ## IMPORT DATASET
-    batch = args.batch[0]
-    if batch != None:
+    
+    if args.batch != None:
+        
+        batch = args.batch[0]
+        
         tmp = os.listdir(batch)
         filenames = [batch + x for x in tmp if (".ab1" in x)]
     else:
@@ -177,8 +180,6 @@ if __name__=="__main__":
     # define plot grid row and columns
     number_of_plot = len(filenames)
     row, col = get_divisors(number_of_plot)
-    
-    print(row, col)
     
     plt.figure(0)
     k = 0
