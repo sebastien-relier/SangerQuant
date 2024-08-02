@@ -15,7 +15,6 @@ import os
 from ImportDataset import ImportAb1
 
 
-
 def subseq_not_match(data):
     
     # extract file whose subsequence is not here
@@ -130,6 +129,7 @@ if __name__=="__main__":
     parser.add_argument("-s", "--subseq", required = True)
     parser.add_argument("-w", "--window", default = 0)
     parser.add_argument("-e", "--export", default = "preview")
+    parser.add_argument("-o", "--output", default = False, type = str)
     args = parser.parse_args()
     
     
@@ -151,8 +151,7 @@ if __name__=="__main__":
     
     
     
-    ## IMPORT DATASET
-    
+    ## import dataset
     if args.batch != None:
         
         batch = args.batch[0]
@@ -164,7 +163,7 @@ if __name__=="__main__":
     
     
     
-    # PARSE AB1 FILES
+    # parse ab1 files
     sanger = ImportAb1(filenames)
             
     # control the presence of the target sequence in the main sequence
@@ -203,12 +202,19 @@ if __name__=="__main__":
     
             k += 1
             
+            
+    # create output filename
+    if args.output == False:
+        output_filename = args.filenames[-1].replace(".ab1","")
+    else:
+        output_filename = args.output
+    
    
-    # EXPORT RESULTS
+    # export or preview the results
     if args.export == "preview":
         plt.show()
     elif args.export == "export":
-        plt.savefig("{}.svg".format(args.filenames.replace(".ab1","")), format="svg", dpi=200)
+        plt.savefig("{}.svg".format(output_filename), format="svg", dpi=200)
     else:
         print("Wrong argument")
         sys.exit(0)
