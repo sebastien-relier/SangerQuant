@@ -82,6 +82,7 @@ def create_sanger_plot(traces, limits, title):
     
     # create the line plot of sanger traces
     
+    
     colors = ["black","green","red","blue"]
     for key, col in zip(traces,colors):
             #
