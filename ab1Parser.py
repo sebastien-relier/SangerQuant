@@ -10,29 +10,6 @@ Created on Tue Jan 16 16:28:27 2024
 from Bio import SeqIO
 from collections import defaultdict
 
-
-class ImportAb1:
-    
-    ''' import data from ab1 files '''
-    
-    def __init__(self, filenames):
-        
-        super().__init__()
-        
-        ab1 = ab1Parser()
-        
-        self.dataset = {}
-        for f in filenames:
-        
-            seq = ab1.import_seq(f)
-            ploc = ab1.get_ploc(f)
-            traces = ab1.get_traces(f)
-    
-            self.dataset[f] = {"Sequence":seq, "Peak_location":ploc, "Traces":traces} 
-
-
-
-
 class ab1Parser:
 
     ''' Import and process ab1 file '''
@@ -71,3 +48,38 @@ class ab1Parser:
             trace[c] = record.annotations["abif_raw"][c]
 
         return trace
+    
+    def get_peak_heights(self, f):
+        
+        
+        ## THIS MUST BE IMPROVED TO AVOID CODE REDUNDANCY
+        # import all traces values of the chromatograms
+        record = SeqIO.read(f, "abi")
+        
+        plocs = record.annotations["abif_raw"]["PLOC2"]
+        
+        channels = ["DATA9", "DATA10", "DATA11", "DATA12"]
+        trace = defaultdict(list)
+        for c in channels:
+            trace[c] = record.annotations["abif_raw"][c]
+        
+        
+        # calculate peak height for each pos
+        res = {}
+        for p in plocs:
+        
+            tmp = {}
+            for data in ["DATA9","DATA10","DATA11","DATA12"]:
+                
+                values = trace[data]
+            
+                tmp[data] = values[p]
+                
+            
+            res[p] = tmp
+                
+        return res
+        
+        
+        pass
+    
