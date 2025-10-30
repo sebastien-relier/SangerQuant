@@ -1,2 +1,3 @@
-# Sanger
-Analyze Sanger file and automatize variant calling and svg
+# TraceQ
+TraceQ is a Sanger File Viewer and Quantifier of base mismatch.
+
