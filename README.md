@@ -1,17 +1,17 @@
 # TraceQ
+
 TraceQ is a Sanger trace viewer and a mismatch quantifier made with PyQt5. This application supports .ab1 file format as input.
 TraceQ is specifically designed to ensure fast quantification of mismatch rates at any selected position. 
 
 
 # Statement of Need
 
-
+Sanger is 
 
 
 
 
 # Key features
-
 
 - Supports .ab1 file format
 - Visualize individual Sanger Traces
