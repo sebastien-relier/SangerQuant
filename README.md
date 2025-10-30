@@ -1,5 +1,5 @@
 # TraceQ
-TraceQ is a Sanger File Viewer and Quantifier of base mismatch. It support AB1 file format.
+TraceQ is a Sanger File Viewer and Base Quantifier encoded using PyQt5. This application supports .ab1 file format as input.
 TraceQ for the fast and effective of multiple files in parallel 
 
 
