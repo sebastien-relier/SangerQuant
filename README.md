@@ -5,7 +5,7 @@ TraceQ is specifically designed to ensure fast quantification of mismatch rates 
 
 
 
-<img width="800" height="600" alt="Screenshot from 2025-10-30 16-08-01" src="https://github.com/user-attachments/assets/2fc2cff0-9330-41e2-8336-3d5def48e828" />
+<img width="600" height="400" alt="Screenshot from 2025-10-30 16-08-01" src="https://github.com/user-attachments/assets/2fc2cff0-9330-41e2-8336-3d5def48e828" />
 
 
 
