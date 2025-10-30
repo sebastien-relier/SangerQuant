@@ -11,18 +11,14 @@ TraceQ for the fast and effective of multiple files in parallel
 
 
 
-# Features
+# Key features
 
 - Supports .ab1 file format
-- Visualize Sanger Traces
-- Perform base quantification from single file or in batch
-- Display nucleotide sequences and translated protein sequences
-- 
-- 
-- Export Raw Trace data | Base Quantificaion
-- 
-
-
+- Visualize individual Sanger Traces
+- Identify mismatch rate at any position
+- Batch export of sequences of interest in svg format
+- Export Trace Values and Peak Values
+- Compare Phred Quality Score across samples to improve experiment control 
 
 
 # Installation
