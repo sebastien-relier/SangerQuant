@@ -10,12 +10,12 @@ This application supports .ab1 file format as input.
 
 
 # Statement of Need
-
+<p align="justify"> 
 Sanger sequencing remains the gold standard for identifying individual DNA sequences. Beyond sequence identification, it enables quantification of mismatch rates at specific positions by comparing the heights of overlapping peaks. This capability is invaluable for assessing the stoichiometry of RNA modifications—such as m5C, m7G, m1A, and ac4C—and for identifying genetic variants in mixed DNA populations. 
 <br>
 <br>
 However, existing software tools are limited to Sanger trace visualization and basic DNA sequence identification.  A critical gap exists in software capable of precisely quantifying peak heights to accurately determine mismatch rates. TraceQ fills this gap by integrating Sanger trace visualization with advanced mismatch identification and quantification.
-
+</p>
 
 
 
