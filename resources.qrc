@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/export2.png</file>
+        <file>icons/splash.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/preview.png</file>
+        <file>icons/exit2.png</file>
+        <file>icons/document.png</file>
+        <file>icons/export_raw.png</file>
+        <file>icons/trim.png</file>
+        <file>icons/view_seq.png</file>
+        <file>icons/batch_quantification.png</file>
+        <file>icons/batch_svg_export.png</file>
+        <file>icons/untrim.png</file>
+    </qresource>
+</RCC>
