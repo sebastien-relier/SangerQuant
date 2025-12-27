@@ -14,7 +14,7 @@ Created on Sun Mar 30 07:09:54 2025
 from PyQt5.QtWidgets import QMainWindow, QListWidget, QPushButton, QAbstractItemView
 from PyQt5.QtGui import QBrush, QColor, QIcon
 from PyQt5.QtCore import Qt
-from buttons import CancelButton
+from buttons import CancelButton, HelpButton
 import pyqtgraph as pg
 from layout import Layout
 import copy
@@ -34,7 +34,7 @@ class TrimWindow(QMainWindow):
         self.create_widgets()
         self.create_layout()
         
-        self.setWindowTitle("Trim Low Quality Sequence")
+        self.setWindowTitle("SangerQuant - Trim Low Quality Sequence")
         self.setCentralWidget(self.layout)
         self.show()
         
@@ -51,6 +51,7 @@ class TrimWindow(QMainWindow):
         self.trimbtn = TrimButton(self)
         self.untrimbtn = UnTrimButton(self)
         self.cancelbtn = CancelButton(self, text="Close")
+        self.helpbutton = HelpButton(name = "trim")
         
     def create_layout(self):
         
@@ -60,7 +61,7 @@ class TrimWindow(QMainWindow):
         self.layout.grid.addWidget(self.cancelbtn, 9,6,1,1)
         self.layout.grid.addWidget(self.untrimbtn, 9,7,1,1)
         self.layout.grid.addWidget(self.trimbtn, 9,8,1,1)
-
+        self.layout.grid.addWidget(self.helpbutton, 9,5,1,1)
         
 
 class TrimPlot(pg.PlotWidget):
@@ -73,12 +74,7 @@ class TrimPlot(pg.PlotWidget):
         
         self.window = window
     
-        self.set_graphic_parameter()
-    
-        # -- initialize the window range on x-axis -- #
-        self.x_start = 0
-        self.x_end = 800
-        self.setXRange(self.x_start, self.x_end)
+        self._set_graphic_parameter()
     
         self.setLabel("left", "Phred Score")
         self.setLabel("bottom", "Position")
@@ -88,24 +84,29 @@ class TrimPlot(pg.PlotWidget):
     def create_plot(self):
          
         self.clear()
+        phred_max = []
         for sample in self.window.samples.selected_samples:
             
             phred = self.window.main.data[sample]["Phred"]
-        
+            phred_max.append(len(phred))
             self.plot(x = range(len(phred)), y= phred,  pen=pg.mkPen("darkgrey", width=1))
 
+
+        # -- initialize the window range on x-axis -- #
+        x_start = 0
+        x_end = max(phred_max)
+        self.setXRange(x_start, x_end)
+
         # -- add line to drag -- #
-        self.vline1 = TrimLimit(self, 50, "left")
-        self.vline2 = TrimLimit(self, 600, "right")
+        self.vline1 = TrimLimit(self, 30, "left")
+        self.vline2 = TrimLimit(self, max(phred_max) - 30, "right")
         
         self.window.layout.grid.addWidget(self, 0,1,8,8)
         
-    def set_graphic_parameter(self):
+    def _set_graphic_parameter(self):
 
        self.setMouseEnabled(x = True, y = False)
-      
-
-
+     
 class TrimLimit:
     
     ''' CREATE INFINITE LINE TO COLOR AREA THAT IS GOING TO BE TRIMMED '''
@@ -151,16 +152,17 @@ class TrimLimit:
         vb = self.graph.getViewBox()
         view_range = vb.viewRect()
         
-       
-        
         if self.direction == "left":
             self.fill.setRect(view_range.left(), 0, x - view_range.left(), 60)
         else:
             self.fill.setRect(x, 0, view_range.right() - x, 60)
+  
         
-           
-        
-
+  
+    
+  
+    
+  
 class SampleList(QListWidget):
     
     ''' CREATE A QPUSHBUTTON TO DO THE QUICK TRIM OF THE SEQUENCE '''
@@ -178,7 +180,6 @@ class SampleList(QListWidget):
         # -- add filenames to list -- #
         filenames = [x for x in list(self.window.main.data.keys())]
         self.addItems(filenames)
-        
         
         # -- create the plot -- #
         self.selected_samples = [item.text() for item in self.window.main.samples.selectedItems()]
