@@ -36,7 +36,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
 ### Instructions
 - Download sangerquant.zip <br>
 - Open Terminal (Ctrl + Alt + T) <br>
-- cd <directory>. Replace <your_directory> with the directory path containing sangerquant.zip <br>
+- cd *directory*. Replace *directory* with the directory path containing sangerquant.zip <br>
 - unzip sangerquant.zip <br>
 - Run sangerquant with the command: cd sangerquant; ./sangerquant <br>
 
