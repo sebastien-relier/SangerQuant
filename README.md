@@ -48,5 +48,8 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - Click open on the pop-up window to import the selected files
 
 ## Explore traces
+- Click on a filename in the list to display the trace.
+- Use the scrollbar at the top or your mouse wheel to navigate along the sequence.
+- To navigate directly to a specific sequence in the trace, enter the sequence in the textbox located below the trace
 
-
+##
