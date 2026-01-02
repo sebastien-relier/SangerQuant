@@ -35,10 +35,10 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 ### Instructions
 Press (Ctrl + Alt + T) to open terminal. <br>
-Type *cd directory_name* to go to the directory containing the SangerQuant zip file.
+Type *cd directory_name* to go to the directory containing the sangerquant zip file.
 Replace "directory_name" with your directory path (e.g: cd ~/Downloads). <br>
-Type unzip SangerQuant.zip to extract the executable. <br>
-Run SangerQuant with cd sangerquant; ./sangerquant. <br>
+Type unzip sangerquant.zip to extract the executable. <br>
+Run sangerquant with cd sangerquant; ./sangerquant. <br>
 
 
 
