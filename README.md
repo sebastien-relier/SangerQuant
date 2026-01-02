@@ -44,6 +44,23 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - Use the scrollbar at the top or your mouse wheel to navigate along the sequence
 - To navigate directly to a specific sequence in the trace, enter the sequence in the textbox located below the trace
 
+## Quantify mismatch
+### Peak heights quantification from a single trace
+- Left-click on a peak from the trace to quantify peak heights, raw value will appear below the sample list on the bottom left
+
+### Batch quantification of mismatch
+- To quantify mismatch at a given position across samples click-on Analyses > Quantify mismatch
+- A new window will pop-up (see below):
+  
+
+  ### perform quantification
+
+
+
+
+
+
+
 ## Change trace appearance
 - Show/Hide the sequence below the trace by clicking on "Trace" and Check/Uncheck "Show_sequence"
 - Fill/Unfill the area under curve by clicking on "Trace" and Check/UnCheck "Fill"
