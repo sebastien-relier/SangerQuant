@@ -34,11 +34,11 @@ However, existing software tools are limited to Sanger trace visualization and b
 This app is available as a standalone executable. Download the sangerquant zip folder [here](https://github.com/sebastien-relier/SangerQuant/releases/tag/v1.0.0). 
 
 ### Instructions
--Download sangerquant zip folder and move it to the directory of your choice. <br>
--Press (Ctrl + Alt + T) to open terminal. <br>
--Go to the directory where you saved the compressed folder through typing: cd your_directory. Replace "your_directory" by your actual directory path. <br>
--Type unzip sangerquant.zip to extract the executable. <br>
--Run sangerquant with cd sangerquant; ./sangerquant. <br>
+- Download sangerquant zip folder and move it to the directory of your choice. <br>
+- Press (Ctrl + Alt + T) to open terminal. <br>
+- Go to the directory where you saved the compressed folder through typing: cd your_directory. Replace "your_directory" by your actual directory path. <br>
+- Type unzip sangerquant.zip to extract the executable. <br>
+- Run sangerquant with cd sangerquant; ./sangerquant. <br>
 
 
 # Tutorial
