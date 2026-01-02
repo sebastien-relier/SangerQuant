@@ -30,3 +30,14 @@ However, existing software tools are limited to Sanger trace visualization and b
 
 
 # Installation
+## Linux
+This app is available as a standalone executable. Download the sangerquant zip folder [here](https://github.com/sebastien-relier/SangerQuant/releases/tag/v1.0.0). 
+
+### Instructions
+Press (Ctrl + Alt + T) to open terminal.
+Type *cd directory_name* to go to the directory containing the SangerQuant zip file. Replace "directory_name" with your directory path (e.g: cd ~/Downloads).
+Type unzip SangerQuant.zip to extract the executable
+Run SangerQuant with cd sangerquant; ./sangerquant
+
+
+
