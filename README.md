@@ -41,4 +41,12 @@ This app is available as a standalone executable. Download the sangerquant zip f
 -Run sangerquant with cd sangerquant; ./sangerquant. <br>
 
 
+# Tutorial
+### import files
+- Click on "File" of the menubar and click on "Import" <br>
+- Select .ab1 files from sanger traces and click open. Use mouse left click while pressing *shift* to select multiple files <br>
+- Click open on the pop-up window to import the selected files
+
+### explore traces
+
 
