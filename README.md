@@ -50,7 +50,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 ### How to Batch Quantify Mismatch at a Specific Position
 1. Access the Quantify Mismatch Tool
-    - Navigate to Analyses > Quantify mismatch in the menu.
+- Navigate to Analyses > Quantify mismatch in the menu.
 
 2. Define the Query Sequence
 - In the popup window, enter your sequence in the top textbox.
@@ -69,7 +69,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
     - Use the Export button to save all data.
     - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
 
-## Find new mismatch within a sequence
+## How to Identify Mismatches De Novo
 1. Access the De Novo Mismatch Identification Tool
     -Navigate to Analyses > Find mismatches in the menu.
    
