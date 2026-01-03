@@ -58,7 +58,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
     - Export the values using the "export" button. Alternaively, select the row you want to export and do right click > copy > paste into a third-party worksheet software
 
 
-### Find new mismatch within a sequence
+## Find new mismatch within a sequence
 
 
 
