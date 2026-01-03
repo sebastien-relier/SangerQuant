@@ -110,8 +110,14 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 
 
-## How to change trace appearance
-- Show/Hide the sequence below the trace by clicking on "Trace" and Check/Uncheck "Show_sequence"
-- Fill/Unfill the area under curve by clicking on "Trace" and Check/UnCheck "Fill"
-- Adjust peaks height through moving the left slidebar below the trace on the right
-- Zoom-in or zoom-out by moving the right slidebar below the trace on the right
+## How to Customize Trace Appearance
+1. Show or Hide the Sequence
+-Click on "Trace" in the menu.
+-Check or uncheck the "Show_sequence" option to display or hide the sequence below the trace.
+2. Fill or Unfill the Area Under the Curve
+-Click on "Trace" in the menu.
+-Check or uncheck the "Fill" option to toggle the filled area under the curve.
+3.Adjust Peak Height
+-Use the left slider below the trace (on the right side) to increase or decrease peak height.
+4.Zoom In or Out
+-Use the right slider below the trace (on the right side) to zoom in or out.
