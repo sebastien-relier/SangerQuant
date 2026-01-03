@@ -51,7 +51,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
 ### Batch quantification of mismatch
 - To quantify mismatch at a given position across samples click-on Analyses > Quantify mismatch
 - A new window will pop-up (see below):
-    - Enter the query sequence in the textbox located on top, replace the base you want to quantify with an N. For example, GCATGGC$\color{red}{\textsf{C}$GTTCTT become GCATGGCNGTTCTT
+    - Enter the query sequence in the textbox located on top, replace the base you want to quantify with an N. For example, GCATGGCC%GTTCTT with C% indicating the base to quantify, you will replace C% with N as follow: GCATGGCNGTTCTT
 
 
 
