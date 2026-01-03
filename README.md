@@ -44,11 +44,11 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - Use the scrollbar at the top or your mouse wheel to navigate along the sequence
 - To navigate directly to a specific sequence in the trace, enter the sequence in the textbox located below the trace
 
-## Quantify mismatch
-### How to Quantify Peaks Height at a Specific Position from a Single Trace
+## How to Quantify Mismatch
+### Quantify peaks height at a specific position from a single trace
 - Left-click on a peak from the trace to quantify peak heights, raw value will appear below the sample list on the bottom left
 
-### How to Batch Quantify Mismatch at a Specific Position
+### Batch quantify mismatch at a specific position
 1. Access the Quantify Mismatch Tool
 - Navigate to Analyses > Quantify mismatch in the menu.
 
@@ -71,26 +71,46 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 ## How to Identify Mismatches De Novo
 1. Access the De Novo Mismatch Identification Tool
-    -Navigate to Analyses > Find mismatches in the menu.
-   
-3. Select Samples
-    - From the list, use your left mouse button to select the samples you want to analyze.
+-Navigate to Analyses > Find mismatches in the menu.   
+2. Select Samples
+-From the list, use your left mouse button to select the samples you want to analyze.
 4. Load the Reference Sequence
-    - Paste your reference sequence in FASTA format into the textbox below the sample list.
-    - 
+-Paste your reference sequence in FASTA format into the textbox below the sample list.
 5. Navigate the Mismatch Plot
-    - Use your scroll wheel to zoom in or out.
-    - Click on a bar of interest to display its position in the main window.
-
+-Use your scroll wheel to zoom in or out.
+-Click on a bar of interest to display its position in the main window.
 6. Export the Mismatch Plot
-    - Click the Export button to save the plot.
+-Click the Export button to save the plot.
+
+## How to Edit the Sanger Trace
+### Trim Low-Quality Portions of the Trace
+1. Access the Trace Trimming Tool
+-Navigate to Edit > Trim.
+
+3. Select Traces to Trim
+-From the list, use your left mouse button to select the traces you want to trim.
+-A plot showing Peak Quality (Phred Score) vs. Peak Position will appear. Higher values indicate better quality.
+
+4. Define the Area to Trim
+- Left-click on the red vertical lines and drag them along the x-axis.
+- The area between the red lines will be kept, while the outer shaded areas will be trimmed.
+
+5. Trim the Sequence
+- Click Trim to apply the changes.
+- (Optional) To undo, click Untrim.
+
+### Reverse-Complement the Trace
+
+1. Navigate to Edit > Reverse_complement.
+- Check or uncheck the checkbox to reverse-complement the selected Sanger trace.
 
 
 
 
 
 
-## Change trace appearance
+
+## How to change trace appearance
 - Show/Hide the sequence below the trace by clicking on "Trace" and Check/Uncheck "Show_sequence"
 - Fill/Unfill the area under curve by clicking on "Trace" and Check/UnCheck "Fill"
 - Adjust peaks height through moving the left slidebar below the trace on the right
