@@ -50,59 +50,59 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 ### Batch quantify mismatch at a specific position
 1. Access the Quantify Mismatch Tool
-- Navigate to Analyses > Quantify mismatch in the menu.
+    - Navigate to Analyses > Quantify mismatch in the menu.
 
 2. Define the Query Sequence
-- In the popup window, enter your sequence in the top textbox.
-- Replace the base you want to quantify with an N.
-- Example: To quantify the base at the position marked as C% in GCATGGCC%GTTCTT, enter GCATGGCNGTTCTT.
+    - In the popup window, enter your sequence in the top textbox.
+    - Replace the base you want to quantify with an N.
+    - Example: To quantify the base at the position marked as C% in GCATGGCC%GTTCTT, enter GCATGGCNGTTCTT.
 
 3. Select Samples
-- From the list, use your left mouse button to select the samples you want to analyze.
+    - From the list, use your left mouse button to select the samples you want to analyze.
 
 4. Set Mutation Parameters
-- Adjust the combobox values to specify the mutation you want to quantify.
+    - Adjust the combobox values to specify the mutation you want to quantify.
 
 5. Preview and Export Results
-- Click Preview to display the quantification results in the table.
-- To export:
-    - Use the Export button to save all data.
-    - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
+    - Click Preview to display the quantification results in the table.
+    - To export:
+        - Use the Export button to save all data.
+        - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
 
 ## How to Identify Mismatches De Novo
 1. Access the De Novo Mismatch Identification Tool
--Navigate to Analyses > Find mismatches in the menu.   
+    - Navigate to Analyses > Find mismatches in the menu.   
 2. Select Samples
--From the list, use your left mouse button to select the samples you want to analyze.
+    - From the list, use your left mouse button to select the samples you want to analyze.
 4. Load the Reference Sequence
--Paste your reference sequence in FASTA format into the textbox below the sample list.
+    - Paste your reference sequence in FASTA format into the textbox below the sample list.
 5. Navigate the Mismatch Plot
--Use your scroll wheel to zoom in or out.
--Click on a bar of interest to display its position in the main window.
+    - Use your scroll wheel to zoom in or out.
+    - Click on a bar of interest to display its position in the main window.
 6. Export the Mismatch Plot
--Click the Export button to save the plot.
+    - Click the Export button to save the plot.
 
 ## How to Edit the Sanger Traces
 ### Trim Low-Quality Portions of the Trace
 1. Access the Trace Trimming Tool
--Navigate to Edit > Trim.
+    - Navigate to Edit > Trim.
 
-3. Select Traces to Trim
--From the list, use your left mouse button to select the traces you want to trim.
--A plot showing Peak Quality (Phred Score) vs. Peak Position will appear. Higher values indicate better quality.
+2. Select Traces to Trim
+    - From the list, use your left mouse button to select the traces you want to trim.
+    - A plot showing Peak Quality (Phred Score) vs. Peak Position will appear. Higher values indicate better quality.
 
-4. Define the Area to Trim
-- Left-click on the red vertical lines and drag them along the x-axis.
-- The area between the red lines will be kept, while the outer shaded areas will be trimmed.
+3. Define the Area to Trim
+    - Left-click on the red vertical lines and drag them along the x-axis.
+    - The area between the red lines will be kept, while the outer shaded areas will be trimmed.
 
-5. Trim the Sequence
-- Click Trim to apply the changes.
-- (Optional) To undo, click Untrim.
+4. Trim the Sequence
+    - Click Trim to apply the changes.
+    - (Optional) To undo, click Untrim.
 
 ### Reverse-Complement the Traces
 
 1. Navigate to Edit > Reverse_complement.
-- Check or uncheck the checkbox to reverse-complement the selected Sanger trace.
+    - Check or uncheck the checkbox to reverse-complement the selected Sanger trace.
 
 
 
@@ -112,12 +112,12 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 ## How to Customize Trace Appearance
 1. Show or Hide the Sequence
-- Click on "Trace" in the menu.
-- Check or uncheck the "Show_sequence" option to display or hide the sequence below the trace.
+    - Click on "Trace" in the menu.
+    - Check or uncheck the "Show_sequence" option to display or hide the sequence below the trace.
 2. Fill or Unfill the Area Under the Curve
-- Click on "Trace" in the menu.
-- Check or uncheck the "Fill" option to toggle the filled area under the curve.
+    - Click on "Trace" in the menu.
+    - Check or uncheck the "Fill" option to toggle the filled area under the curve.
 3. Adjust Peak Height
-- Use the left slider below the trace (on the right side) to increase or decrease peak height.
+    - Use the left slider below the trace (on the right side) to increase or decrease peak height.
 4. Zoom In or Out
-- Use the right slider below the trace (on the right side) to zoom in or out.
+    - Use the right slider below the trace (on the right side) to zoom in or out.
