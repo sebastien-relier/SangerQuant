@@ -52,8 +52,13 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - To quantify mismatch at a given position across samples click-on Analyses > Quantify mismatch
 - A new window will pop-up (see below):
     - Enter the query sequence in the textbox located on top, replace the base you want to quantify with an N. For example, GCATGGCC%GTTCTT with C% indicating the base to quantify, you will replace C% with N as follow: GCATGGCNGTTCTT
+    - Select the samples to analyze from the list using mouse left click
+    - Adjust combobox values to define the mutation to quantify
+    - Click Preview to display the quantification in the table
+    - Export the values using the "export" button. Alternaively, select the row you want to export and do right click > copy > paste into a third-party worksheet software
 
 
+### Find new mismatch within a sequence
 
 
 
