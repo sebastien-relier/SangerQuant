@@ -45,17 +45,31 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - To navigate directly to a specific sequence in the trace, enter the sequence in the textbox located below the trace
 
 ## Quantify mismatch
-### Peak heights quantification from a single trace
+### How to Quantify Peaks Height at a Specific Position from a Single Trace
 - Left-click on a peak from the trace to quantify peak heights, raw value will appear below the sample list on the bottom left
 
-### Batch quantification of mismatch
-- To quantify mismatch at a given position across samples click-on Analyses > Quantify mismatch
-- A new window will pop-up (see below):
-    - Enter the query sequence in the textbox located on top, replace the base you want to quantify with an N. For example, GCATGGCC%GTTCTT with C% indicating the base to quantify, you will replace C% with N as follow: GCATGGCNGTTCTT
-    - Select the samples to analyze from the list using mouse left click
-    - Adjust combobox values to define the mutation to quantify
-    - Click Preview to display the quantification in the table
-    - Export the values using the "export" button. Alternaively, select the row you want to export and do right click > copy > paste into a third-party worksheet software
+### How to Batch Quantify Mismatch at a Specific Position
+1. Access the Quantify Mismatch Tool
+- Navigate to Analyses > Quantify mismatch in the menu.
+
+2. Define the Query Sequence
+- In the popup window, enter your sequence in the top textbox.
+- Replace the base you want to quantify with an N.
+- Example: To quantify the base at the position marked as C% in GCATGGCC%GTTCTT, enter GCATGGCNGTTCTT.
+
+3. Select Samples
+- From the list, use your left mouse button to select the samples you want to analyze.
+
+4. Set Mutation Parameters
+- Adjust the combobox values to specify the mutation you want to quantify.
+
+5. Preview and Export Results
+- Click Preview to display the quantification results in the table.
+- To export:
+    - Use the Export button to save all data.
+    - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
+
+
 
 
 ## Find new mismatch within a sequence
