@@ -82,7 +82,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
 6. Export the Mismatch Plot
 -Click the Export button to save the plot.
 
-## How to Edit the Sanger Trace
+## How to Edit the Sanger Traces
 ### Trim Low-Quality Portions of the Trace
 1. Access the Trace Trimming Tool
 -Navigate to Edit > Trim.
@@ -99,7 +99,7 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - Click Trim to apply the changes.
 - (Optional) To undo, click Untrim.
 
-### Reverse-Complement the Trace
+### Reverse-Complement the Traces
 
 1. Navigate to Edit > Reverse_complement.
 - Check or uncheck the checkbox to reverse-complement the selected Sanger trace.
