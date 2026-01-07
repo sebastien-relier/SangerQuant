@@ -49,25 +49,16 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - Left-click on a peak from the trace to quantify peak heights, raw value will appear below the sample list on the bottom left
 
 ### Batch quantify mismatch at a specific position
-1. Access the Quantify Mismatch Tool
-    - Navigate to Analyses > Quantify mismatch in the menu.
-
-2. Define the Query Sequence
-    - In the popup window, enter your sequence in the top textbox.
+- Navigate to Analyses > Quantify mismatch in the menu.
+- In the popup window, enter your sequence in the top textbox.
     - Replace the base you want to quantify with an N.
     - Example: To quantify the base at the position marked as C% in GCATGGCC%GTTCTT, enter GCATGGCNGTTCTT.
-
-3. Select Samples
-    - From the list, use your left mouse button to select the samples you want to analyze.
-
-4. Set Mutation Parameters
-    - Adjust the combobox values to specify the mutation you want to quantify.
-
-5. Preview and Export Results
-    - Click Preview to display the quantification results in the table.
-    - To export:
-        - Use the Export button to save all data.
-        - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
+- From the list, use your left mouse button to select the samples you want to analyze.
+- Adjust the combobox values to specify the mutation you want to quantify.
+ - Click Preview to display the quantification results in the table.
+- To export:
+   - Use the Export button to save all data.
+   - Or, right-click on specific rows, select Copy, and paste into your preferred worksheet software (e.g., Excel).
 
 ## How to Identify Mismatches De Novo
 1. Access the De Novo Mismatch Identification Tool
