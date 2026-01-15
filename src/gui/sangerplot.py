@@ -14,6 +14,7 @@ from PyQt5.QtGui import QBrush, QColor, QFont
 from PyQt5.QtCore import Qt
 import re
 
+from trace_color import Color
 
 ## Switch to using white background and black foreground
 pg.setConfigOption('background', 'w')
@@ -41,6 +42,7 @@ class SangerTraces(pg.PlotWidget):
         
         ## Parameters for the plot look and shape
         self._initialize_parameters()
+        self._initialize_trace_color()
         
         #
         self.subseq = ""
@@ -88,6 +90,15 @@ class SangerTraces(pg.PlotWidget):
         self.display_sequence = True
         self.show_quality = False
   
+    def _initialize_trace_color(self):
+        
+        self.colormode = "regular"
+        
+        self.color = Color()
+        self.color_palette = self.color.palettes["regular"]
+        
+        
+    
     def _override_context_menu(self):
         
         self.plotItem.ctrlMenu = None
@@ -119,8 +130,8 @@ class SangerTraces(pg.PlotWidget):
             
             size = len(traces[nuc])
             
-            fill_color = rgba["fill"][nuc]
-            line_color = rgba["line"][nuc]
+            fill_color = self.color_palette["fill"][nuc]
+            line_color = self.color_palette["line"][nuc]
             
             if self.fill == True:
                 self.plot(x = range(size), y= traces[nuc], fillLevel =-0.3 ,brush=fill_color, pen=pg.mkPen(line_color, width=self.linewidth))
@@ -227,12 +238,10 @@ class QuantificationArea:
         
         self.line_left = None
     
-
         # -- create rectangle between lines -- #
         self.fill = pg.QtGui.QGraphicsRectItem()
         self.fill.setBrush(QBrush(QColor(200, 200, 255, 80)))  # translucent blue fill
         self.fill.setPen(pg.mkPen(None))  # no outline
-    
     
     def define_quantification_area(self):
         
@@ -310,7 +319,7 @@ class ShowSequence(QWidget):
             
             if (self.trace.xpos <= x <= self.trace.xpos + self.trace.xwindow):
                 
-                nuc = pg.TextItem(text=y, color=rgba["line"][y], anchor=(0.0,0.0))
+                nuc = pg.TextItem(text=y, color=self.trace.color_palette["line"][y], anchor=(0.0,0.0))
                 nuc.setPos(x - 2, 10)
                 nuc.setFont(font)
                 

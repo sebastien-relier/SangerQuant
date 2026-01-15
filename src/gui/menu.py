@@ -18,6 +18,7 @@ from export_svg import ExportSVG
 from compare_quality import CompareQuality
 from mismatch_whole_seq import QuantifyWholeSeq
 from alignment import AlignmentWindow
+from trace_color import ColorWindow
 
 class FileMenu:
     
@@ -263,15 +264,28 @@ class TracesMenu:
         self.seqAction.setCheckable(True)
         self.seqAction.setChecked(True)
         
+        
+        self.quickcolorAction = QAction("&Colorblind mode", self.menubar)
+        self.quickcolorAction.setCheckable(True)
+        self.quickcolorAction.setChecked(False)
+        
+        self.morecolorAction = QAction("&More colors", self.menubar)
+        
+        
         # -- connect the actions to their functions -- #
         self.fillAction.triggered.connect(self.fill_peak)
         self.seqAction.triggered.connect(self.show_sequence)
-      
+        self.quickcolorAction.triggered.connect(self._set_to_colorblind_mode)
+        self.morecolorAction.triggered.connect(self._show_more_color_options)
         
         # -- add the actions to the trace menus under specific order -- #
         self.menu = self.menubar.addMenu("&Traces")
         self.menu.addAction(self.seqAction)
         self.menu.addAction(self.fillAction)
+        self.menu.addAction(self.quickcolorAction)
+        #self.menu.addSeparator()
+        #self.menu.addAction(self.morecolorAction) # will be a new feature for next release
+        
 
     def fill_peak(self):
         
@@ -296,6 +310,22 @@ class TracesMenu:
             self.main.plot.display_sequence = True
             self.main.plot.show_sequence.show_sequence_from_traces()
         
+        
+    def _set_to_colorblind_mode(self):
+        
+        if  self.main.plot.colormode == "colorblind":
+            self.main.plot.color_palette = self.main.plot.color.palettes["regular"]
+            self.main.plot.colormode = "regular"
+        else:
+            self.main.plot.color_palette = self.main.plot.color.palettes["colorblind"]
+            self.main.plot.colormode = "colorblind"
+        
+        self.main.plot.create_plot()
+        
+    def  _show_more_color_options(self):
+        
+        self.color_options = ColorWindow()
+        self.color_options.show()
         
 
 class AnalysisMenu:
@@ -326,7 +356,6 @@ class AnalysisMenu:
         self.menu.addAction(self.mismatchAction)
         self.menu.addAction(self.quantAction)
         self.menu.addAction(self.exportsubseqAction)
-        
     
     def quantify_peak(self):
         
