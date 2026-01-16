@@ -427,6 +427,7 @@ class MenuBar(QMainWindow):
         # from the tracemenu
         self.tracemenu.seqAction.setEnabled(status)
         self.tracemenu.fillAction.setEnabled(status)
+        self.tracemenu.quickcolorAction.setEnabled(status)
         
         # from the analysismenu
         self.analysismenu.quantAction.setEnabled(status)
