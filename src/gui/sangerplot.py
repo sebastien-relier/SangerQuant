@@ -207,7 +207,8 @@ class SangerTraces(pg.PlotWidget):
     def wheelEvent(self, event):
         
         # -- get the number degrees the wheel was rotated -- #
-        degrees = event.angleDelta().y() / 8
+        degrees = round(event.angleDelta().y() / 8, 0)
+        degrees = int(degrees)
         steps = degrees * 5
         
         # -- update x-position based on wheel rotation -- #
@@ -239,7 +240,7 @@ class QuantificationArea:
         self.line_left = None
     
         # -- create rectangle between lines -- #
-        self.fill = pg.QtGui.QGraphicsRectItem()
+        self.fill = pg.QtWidgets.QGraphicsRectItem()
         self.fill.setBrush(QBrush(QColor(200, 200, 255, 80)))  # translucent blue fill
         self.fill.setPen(pg.mkPen(None))  # no outline
     

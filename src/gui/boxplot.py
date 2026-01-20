@@ -33,24 +33,24 @@ class Boxplot:
             lower_bound = min([x for x in value if x > q1 - 1.5 * iqr])
             upper_bound = max([x for x in value if x < q3 + 1.5 * iqr])
         
-            box = pg.QtGui.QGraphicsRectItem(i - 2.5, q1, 5,  iqr)
+            box = pg.QtWidgets.QGraphicsRectItem(i - 2.5, q1, 5,  iqr)
             box.setPen(pg.mkPen('black', width = 3))
             box.setBrush(pg.mkBrush('lightblue'))
             self.window.addItem(box)
             
     
             # Plot the median line
-            median_line = pg.QtGui.QGraphicsLineItem(i - 2.5, median, i +  2.5, median)
+            median_line = pg.QtWidgets.QGraphicsLineItem(i - 2.5, median, i +  2.5, median)
             median_line.setPen(pg.mkPen('black', width = 3))
             self.window.addItem(median_line)
             
             # Plot the whiskers
-            whisker1 = pg.QtGui.QGraphicsLineItem(i + 0, q1, i + 0, lower_bound)
+            whisker1 = pg.QtWidgets.QGraphicsLineItem(i + 0, q1, i + 0, lower_bound)
             whisker1.setPen(pg.mkPen('black', width = 3))
             self.window.addItem(whisker1)
             
             # plot the whiskers
-            whisker2 = pg.QtGui.QGraphicsLineItem(i + 0, q3, i + 0, upper_bound)
+            whisker2 = pg.QtWidgets.QGraphicsLineItem(i + 0, q3, i + 0, upper_bound)
             whisker2.setPen(pg.mkPen('black', width = 3))
             self.window.addItem(whisker2)
     

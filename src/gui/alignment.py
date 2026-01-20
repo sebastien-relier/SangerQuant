@@ -262,7 +262,7 @@ class AlignmentSettings(QWidget):
         self.match_score = SetAlignmentScore(self.window, text="match_score", value= 2, minimum = 0, maximum=10)
         self.mismatch_score = SetAlignmentScore(self.window, text= "mismatch_score", value= -1, minimum=-10, maximum=0)
         self.open_gap_score = SetAlignmentScore(self.window,text="open_gap_score", value = -10, minimum=-10, maximum=0)
-        self.extend_gap_score = SetAlignmentScore(self.window, text ="extend_gap_score", value = -0.5, minimum=-10, maximum=0)
+        self.extend_gap_score = SetAlignmentScore(self.window, text ="extend_gap_score", value = -1, minimum=-10, maximum=0)
         
         # pushbutton
         self.apply_button = ApplyButton(self.window)
@@ -300,7 +300,7 @@ class AlignmentSettings(QWidget):
         self.match_score.setValue(2)
         self.mismatch_score.setValue(-1)
         self.open_gap_score.setValue(-10)
-        self.extend_gap_score.setValue(-0.5)
+        self.extend_gap_score.setValue(-1)
         
 class SetAlignmentType(QRadioButton):
     

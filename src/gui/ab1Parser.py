@@ -118,7 +118,7 @@ class ab1Parser:
                 values = self.trace[nuc]
                 subset = values[int(left):int(right)]
                 
-                area = np.trapz(subset, dx=1)
+                area = np.trapezoid(subset, dx=1)
        
                 tmp[nuc] = area
             
