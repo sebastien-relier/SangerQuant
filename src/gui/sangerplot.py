@@ -180,14 +180,17 @@ class SangerTraces(pg.PlotWidget):
         # -- create the lines to delimit the plot to quantify -- #
         self.quantification_area.peak_pos = position
         self.quantification_area.define_quantification_area()
-        
+
         # -- arrange data to fit the QTable -- #
+       
         res = []
-        for v1 in self.height[closest_peak].values():
-            res.append([v1])
-        
+        for nucleotide, value in self.height[closest_peak].items():
+            
+            res.append([nucleotide, value])
+
         # -- update the quantifiation table -- #
-        self.main.quantification.update_table(res)
+        self.main.quantification.update_table(data = res)
+        self.main.quantification.create_row_label()
         
     def mouse_clicked(self, mouseClickEvent):
         

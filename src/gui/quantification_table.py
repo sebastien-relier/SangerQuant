@@ -65,21 +65,27 @@ class PeakQuant(QTableWidget):
             i += 1
      
     def update_table(self, data = None):
-        # data must be a list of list with each item being one row of several columns
         
+        '''
+        this method update the table from input data
+        you can change ncol to fit required number of columns
+        
+        data structure must be list of list:
+            [[sample_name, value1, value2], [sample_name2, value1, value2]]
+        
+        '''
+        
+        # set the number of row and the number columns based on the number of samples
         self.setRowCount(len(data))
+        self.setColumnCount(len(data[0]))
 
-        # -- edit the qtable to add the value -- #
-        if self.rowlabel != {}:
-            start = 1
-        else:
-            start = 0
-        
+       
+        # add value per for each row then columns
         i = 0
-        for s in data:
+        for row in data:
             
-            j = start
-            for k in s:
+            j = 0
+            for k in row:
                 
                 tmp = QTableWidgetItem(str(k))
                 self.setItem(i, j, tmp)
@@ -92,18 +98,10 @@ class PeakQuant(QTableWidget):
         
         row, col = self.rowCount(), self.columnCount()
         
-        if self.rowlabel != {}:
-            
-            for r in range(row):
-                for c in range(1,col):
-                
-                    self.setItem(r,c, None)
-        else:
-            
-           for r in range(row):
-               for c in range(col):
+        for r in range(row):
+            for c in range(col):
                
-                   self.setItem(r,c, None)
+                self.setItem(r,c, None)
         
     
     def rename_headers(self, new_header):

@@ -109,7 +109,7 @@ class PreviewButton(QPushButton):
     def on_click(self):
 
         self.calculator.on_click()
-        self.calculator.update_table()
+        
 
 class ExportButton(QPushButton):
 
@@ -128,7 +128,6 @@ class ExportButton(QPushButton):
     def on_click(self):
 
         self.window.calc.on_click()
-        self.window.calc.update_table()
         self.export_data_to_csv()
 
     def export_data_to_csv(self):
@@ -169,52 +168,103 @@ class Calculator:
 
     def on_click(self):
 
+        
         # -- extract the values of reference base and target to quantify -- #
-        self.get_reference_and_target_base()
+        self._get_reference_and_target_base()
+
+        self._create_new_header()
 
 
         # -- pipeline to quantify transition from large sets of samples -- #
         self.res = []
         for sample in self.samples:
 
-            pos_of_target = self.get_position_of_nucleoside_to_quantify(sample)
+            pos_of_target = self._get_position_of_nucleoside_to_quantify(sample)
 
             if pos_of_target is not None:
             
-                peak_values = self.extract_peak_values_at_target_position(sample, pos_of_target)
-            
-                target_value = self.calculate_target_value(peak_values)
+                transition_list = []
+                for pos in pos_of_target:
                 
-                reference_value = self.calculate_reference_value(peak_values)
-        
-                transition_value = self.calculate_transition(target_value, reference_value)
-
-                self.res.append([sample, transition_value])
-            else:
-                self.res.append([sample, None])
+                    peak_values = self.extract_peak_values_at_target_position(sample, pos)
             
-    
-    def get_reference_and_target_base(self):
+                    target_value = self.calculate_target_value(peak_values)
+                
+                    reference_value = self.calculate_reference_value(peak_values)
+        
+                    transition_value = self.calculate_transition(target_value, reference_value)
+
+                    transition_list.append(transition_value)
+                        
+                    
+                transition_list = [sample] + transition_list
+                self.res.append(transition_list)
+                
+            else:
+                self.res.append(sample, None)
+         
+        self._update_table() # update the table
+         
+    def _create_new_header(self):
+        
+        '''
+        this method creates a new header for the table
+        the header is based on the number of N to quantify
+        '''
+        
+        query = self.window.queried_sequence.text()             # get the query sequence from QLineEdit
+                
+        nuc_to_quant = self.window.noncanonical.currentText()   # get the nucleotide name to quantify (C,G,A, or T)
+        nuc_ref = self.window.canonical.currentText()           # get the nucleotide name to of reference (C,G,A, or T)
+        
+        res = []
+        for match in re.finditer(r'N', query):                  # find all N position within the query sequence (i.e pos to quantify)
+            
+            pos = match.start()                                 # extract position from match
+            pos = str(pos)                                      # convert to str
+            
+            label = " | " + "pos:" + pos + " | \n" + nuc_ref + ":" + nuc_to_quant + " (%)" # create the label
+            res.append(label)                                   # append label to a list of labels whose length depend on the N number
+           
+           
+        self.header = ["Samples"] + res                         # create new header
+         
+        
+
+    def _get_reference_and_target_base(self):
         # extract the nucleoside of reference and the target from ComboBox to calculate desired transition (ex : C:T), 
         
         self.nucleoside_to_quantify = self.window.noncanonical.currentText()
         self.reference_nucleoside = self.window.canonical.currentText()
         
     
-    def get_position_of_nucleoside_to_quantify(self, sample):
+    def _get_position_of_nucleoside_to_quantify(self, sample):
         # Get the position of nucleoside to quantify from the sequence
         
-        queried_sequence = self.window.queried_sequence.text()    
+        queried_sequence = self.window.queried_sequence.text() 
+        
+        # find all N positions
+        n_positions = []
+        for match in re.finditer(r'N', queried_sequence):
+            n_positions.append(match.start())
+        
         queried_sequence = queried_sequence.replace("N",".")
         
+    
         # get position of the nucleoside to quantify within the sanger sequence
         pos = self.find_sequence(queried_sequence, self.window.main.data[sample]["Seq"])
         
-        if pos is not None:
-            pos = pos + queried_sequence.find(".")
-            return pos
-        else:
-            return None
+        pos_list =[]
+        for np in n_positions:
+            
+            if pos is not None:
+                pos = pos + int(np)
+                pos_list.append(pos)
+                
+            else:
+                pos_list.append(pos)
+        
+        return pos_list
 
     def extract_peak_values_at_target_position(self, sample, pos):
 
@@ -247,10 +297,10 @@ class Calculator:
         return transition
 
     
-    def update_table(self):
+    def _update_table(self):
       
       # -- write the results into a QTableWidget -- #
-      self.window.results.rename_headers(["Samples", self.reference_nucleoside + ":" + self.nucleoside_to_quantify + "(%)"])
+      self.window.results.rename_headers(self.header)
       self.window.results.reset_table_values()
       self.window.results.update_table(data = self.res)
 
