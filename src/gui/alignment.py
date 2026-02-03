@@ -27,6 +27,7 @@ class AlignmentWindow(QWidget):
 
         self.setWindowTitle("SangerQuant - Sequence alignment with a reference")
         self.resize(1200,850)
+        
         # Import data
         self.main = main
         self.alignment = MakeAlignment(self)
@@ -47,7 +48,7 @@ class AlignmentWindow(QWidget):
         self.cancelbutton = CancelButton(self)
         self.exportbutton = ExportButton(self)
         self.helpbutton = HelpButton(name="align_sequence")
-    
+        
         # create setting window
         self.alignment_settings = AlignmentSettings(self)
         self.settingbutton = SettingButton(self.alignment_settings)
@@ -62,7 +63,10 @@ class AlignmentWindow(QWidget):
         self.layout.addWidget(QHSeparationLine(),5,0,1,4)
         self.layout.addWidget(CreateLabel(text="Reference sequence:"),6,0,1,1)
         self.layout.addWidget(self.reference_seq,7,0,5,4)
-        self.layout.addWidget(self.store_alignment,0,5,12,5)
+        
+        
+        
+        self.layout.addWidget(self.store_alignment,1,5,11,5)
         
         # -- add buttons -- #
         self.layout.addWidget(self.helpbutton, 12,6,1,1)
@@ -74,7 +78,6 @@ class AlignmentWindow(QWidget):
         self.setLayout(self.layout)
         
         
-
 class FileList(QListWidget):
 
     ''' SELECT THE SAMPLES TO ANALYZE '''
@@ -137,6 +140,10 @@ class MakeAlignment:
     
     def _extract_informations(self, sample):
         
+        '''
+        method to extract the sanger sequence and the reference sequence from the Widgets
+        '''
+        
         # return information for processin
         seq = self.window.main.data[sample]["Seq"]
         refseq = self.window.reference_seq.toPlainText()
@@ -146,14 +153,21 @@ class MakeAlignment:
        
     def align_sequences(self):
         
+        ''' 
+        method to perform pairwise alignment between the reference and the sample sequences
+        '''
+        
         # align sequences with the sequence of reference
         for s in self.window.sample_list.selected_samples:
             
-            seq, refseq = self._extract_informations(s)
-            self.alignment = self.window.aligner.align_sequence(seq,refseq)
+            seq, refseq = self._extract_informations(s) # extract target and reference sequence to align to
+            self.alignment = self.window.aligner.align_sequence(seq,refseq) # make alignment
             
-            subset_seq = seq[self.alignment.coordinates[0][0]:self.alignment.coordinates[0][-1]]
-            subset_ref = refseq[self.alignment.coordinates[1][0]:self.alignment.coordinates[1][-1]]
+            target_start, target_end = self.alignment.coordinates[0][0], self.alignment.coordinates[0][-1] # get coordinate of alignment from target sequence
+            ref_start, ref_end = self.alignment.coordinates[1][0], self.alignment.coordinates[1][-1] # get coordinate of alignment from reference sequence
+            
+            subset_seq = seq[target_start:target_end]  # subset target sequence
+            subset_ref = refseq[ref_start:ref_end] # subset refenrece sequence
             
             match = ["|" if x == y else "." for x,y in zip(list(subset_seq),list(subset_ref))]
             match= "".join(match)
@@ -161,6 +175,10 @@ class MakeAlignment:
             self._create_alignment_text(subset_seq, subset_ref, match)
                      
     def _create_alignment_text(self, aligned_seq, aligned_ref, match_symbol):
+        
+        ''' 
+        method to pcreate the alignment text that will be display after alignments
+        '''
         
         res = "\n\n"
         
@@ -237,7 +255,12 @@ class ExportButton(QPushButton):
 
 class AlignmentSettings(QWidget):
     
-    ''' This class store the alignment results in QPlainTextEdit '''
+    ''' CREATE A WINDOW TO CHANGE THE ALIGNMENT SETTING:
+        - change match-score
+        - mismatch-score
+        - open-gap-score
+        - extend-gap-score
+    '''
     
     def __init__(self, window):
         
@@ -297,6 +320,10 @@ class AlignmentSettings(QWidget):
         
     def _set_spinbox_values(self):
         
+        '''
+        method to init the parameters of aligments
+        '''
+        
         self.match_score.setValue(2)
         self.mismatch_score.setValue(-1)
         self.open_gap_score.setValue(-10)
@@ -344,7 +371,9 @@ class SetAlignmentScore(QSpinBox):
         
 class ApplyButton(QPushButton):
     
-    ''' add apply button '''
+    ''' 
+    CREATE A QPUSHBUTTON TO APPLY NEW SETTING FROM THE ALIGNEMENT SETTING WINDOW
+    '''
     
     def __init__(self, window:AlignmentWindow):
         
