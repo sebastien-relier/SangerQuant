@@ -135,14 +135,18 @@ class QuerySequence(QLineEdit):
 
     def on_change(self):
         '''Highlights the query sequence in the DNA and protein sequences.'''
-        text = self.text().upper()
-        self.setText(text)
-
+        
+        # convert sequence to upper while keeping the cursor position
+        cursor_pos = self.cursorPosition()    # Save the current cursor position
+        self.setText(self.text().upper())     # Convert the text to uppercase
+        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
+        
         # Reset colors
         self.window.dna_sequence.change_text_color(self.window.dna_sequence.seq, QColor("black"))
         self.window.protein_sequence.change_text_color(self.window.protein_sequence.seq, QColor("black"))
 
         # Highlight matches
+        text = self.text()
         self.window.dna_sequence.change_text_color(text, QColor("red"))
         self.window.protein_sequence.change_text_color(text, QColor("red"))
         

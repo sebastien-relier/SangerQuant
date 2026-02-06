@@ -6,9 +6,9 @@ Created on Thu May 29 18:18:11 2025
 @author: sebastien
 """
 
-from PyQt5.QtWidgets import QPushButton, QSlider, QSizePolicy, QLabel, QFileDialog, QMessageBox
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import *
+from PyQt5.QtWidgets import QPushButton, QSlider, QSizePolicy, QLabel, QFileDialog, QMessageBox, QLineEdit
+from PyQt5.QtGui import QIcon, QRegExpValidator
+from PyQt5.QtCore import Qt, QRegExp
 import pyqtgraph as pg
 
 class CancelButton(QPushButton):
@@ -272,5 +272,31 @@ class TraceShape(QSlider):
         pass
 
 
+class EnterSequence(QLineEdit):
+    
+    ''' THIS CLASS CREATE THE QLINE EDIT WIDGET TO SELECT THE SEQUENCE TO QUANTIFY '''
 
+    def __init__(self, placeholder = "Enter the sequence"):
+        
+        super().__init__()
+        
+        self.create_validator()
+        self.setPlaceholderText("Enter the sequence to export (ex : GCATGGCNGTCTT)")
+    
+        self.textChanged.connect(self.on_change)
+        
+    def on_change(self):
+        
+        cursor_pos = self.cursorPosition()    # Save the current cursor position
+          
+        self.setText(self.text().upper())     # Convert the text to uppercase
+              
+        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
+        
+    def create_validator(self):
+        # restricts input to G,A,T,C
+        
+        regex = QRegExp("[GATCNgatcn(|)*]+")
+        validator = QRegExpValidator(regex)
+        self.setValidator(validator)
 

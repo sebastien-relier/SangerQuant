@@ -8,10 +8,10 @@ Created on Sun Apr  7 05:30:28 2024
 
 
 # -- IMPORT PACKAGES -- #
-from PyQt5.QtCore import QRegExp, Qt
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog
-from PyQt5.QtGui import QRegExpValidator, QIcon
-from buttons import CancelButton, HelpButton, CreateLabel
+from PyQt5.QtGui import QIcon
+from buttons import CancelButton, HelpButton, CreateLabel, EnterSequence
 from quantification_table import PeakQuant
 from export_to_csv import ExportToCsv
 from qline import QHSeparationLine
@@ -43,7 +43,7 @@ class ExportQuantification(QWidget):
         # create list of sample
         self.sample_list = FileList(self, [key for key in self.main.data])
 
-        self.queried_sequence = QueriedSequence()
+        self.queried_sequence = EnterSequence(placeholder="Enter the sequence here. Replace the base to quantify with a 'N'")
 
         # -- create the widgets to select the transition -- #
         self.canonical = SelectBase(self, basedefault = "C")
@@ -318,37 +318,7 @@ class Calculator:
         else:
             return seq.find(tmp[0])
 
-
-class QueriedSequence(QLineEdit):
-
-    ''' THIS CLASS CREATE THE QLINE EDIT WIDGET TO SELECT THE SEQUENCE TO QUANTIFY '''
-
-    def __init__(self):
-
-        super().__init__()
-
-        self.create_validator()
-        self.setPlaceholderText("Enter the sequence here. Replace the base to quantify with a 'N'")
-
-        self.textChanged.connect(self.on_change)
-
-    def on_change(self):
-        # update text and change to uppercase automatically
         
-        cursor_pos = self.cursorPosition()    # Save the current cursor position
-          
-        self.setText(self.text().upper())     # Convert the text to uppercase
-              
-        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
-
-    def create_validator(self):
-        # restricts input to G,A,T,C
-
-        regex = QRegExp("[GATCNgatcn(|)*]+")
-        validator = QRegExpValidator(regex)
-        self.setValidator(validator)
-
-            
 class FileList(QListWidget):
 
     ''' SELECT THE SAMPLES TO ANALYZE '''

@@ -39,7 +39,16 @@ class SearchSequence(QLineEdit):
     def onChange(self):
         
         # -- update the plot to be at the sequence -- #
-        self.setText(self.text().upper())
+        
+        
+        cursor_pos = self.cursorPosition()    # Save the current cursor position
+          
+        self.setText(self.text().upper())     # Convert the text to uppercase
+              
+        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
+        
+        
+        
         self.main.plot.subseq = self.text().replace("N",".")
         self.main.plot.go_to_subsequence()
         self.control_existence()

@@ -7,15 +7,15 @@ Created on Thu Apr 25 07:09:46 2024
 """
 
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QGridLayout, QListWidget, QLineEdit, QSpinBox, QAbstractItemView, QFileDialog, QRadioButton, QMessageBox
-from PyQt5.QtCore import Qt, QRegExp
-from PyQt5.QtGui import QIcon, QRegExpValidator
+from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QListWidget, QSpinBox, QAbstractItemView, QFileDialog, QRadioButton, QMessageBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from qline import QHSeparationLine
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import re
 import math
-from buttons import CancelButton, CreateLabel, HelpButton
+from buttons import CancelButton, CreateLabel, HelpButton, EnterSequence
 
 
 class ExportSVG(QWidget):
@@ -41,7 +41,7 @@ class ExportSVG(QWidget):
         
         # -- create widgets -- #
         self.sample_list = SampleList(self.main.data)
-        self.target_sequence = SequenceToExport()
+        self.target_sequence = EnterSequence(placeholder = "Enter the sequence subset to export (ex: GCATGGCNGTTCTT")
         self.apply = ApplyButton(self)  # enter self and data
         self.export = ExportButton(self)
         self.cancel = CancelButton(self)
@@ -119,34 +119,7 @@ class SampleList(QListWidget):
         self.addItems(filenames)
     
 
-class SequenceToExport(QLineEdit):
-    
-    ''' THIS CLASS CREATE THE QLINE EDIT WIDGET TO SELECT THE SEQUENCE TO QUANTIFY '''
 
-    def __init__(self):
-        
-        super().__init__()
-        
-        self.create_validator()
-        self.setPlaceholderText("Enter the sequence to export (ex : GCATGGCNGTCTT)")
-        
-        
-        self.textChanged.connect(self.on_change)
-        
-    def on_change(self):
-        
-        cursor_pos = self.cursorPosition()    # Save the current cursor position
-          
-        self.setText(self.text().upper())     # Convert the text to uppercase
-              
-        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
-        
-    def create_validator(self):
-        # restricts input to G,A,T,C
-        
-        regex = QRegExp("[GATCNgatcn(|)*]+")
-        validator = QRegExpValidator(regex)
-        self.setValidator(validator)
 
 class TracePlotter:
     
