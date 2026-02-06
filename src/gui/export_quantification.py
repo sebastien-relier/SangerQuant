@@ -181,28 +181,27 @@ class Calculator:
 
             pos_of_target = self._get_position_of_nucleoside_to_quantify(sample)
 
-            if pos_of_target is not None:
+            transition_list = [sample]
+            for pos in pos_of_target:
             
-                transition_list = []
-                for pos in pos_of_target:
-                
+                if pos is not None:
+            
                     peak_values = self.extract_peak_values_at_target_position(sample, pos)
-            
-                    target_value = self.calculate_target_value(peak_values)
-                
-                    reference_value = self.calculate_reference_value(peak_values)
         
+                    target_value = self.calculate_target_value(peak_values)
+            
+                    reference_value = self.calculate_reference_value(peak_values)
+    
                     transition_value = self.calculate_transition(target_value, reference_value)
-
-                    transition_list.append(transition_value)
-                        
-                    
-                transition_list = [sample] + transition_list
-                self.res.append(transition_list)
                 
-            else:
-                self.res.append(sample, None)
-         
+                    transition_list.append(transition_value)
+                 
+                else:
+                    
+                    transition_list.append(None)
+            
+            self.res.append(transition_list)
+    
         self._update_table() # update the table
          
     def _create_new_header(self):
@@ -269,9 +268,12 @@ class Calculator:
     def extract_peak_values_at_target_position(self, sample, pos):
 
         #  -- the area under peak or peak height --  #
-        index = list(self.window.main.data[sample]["Height"].keys())[pos]
-        peak = self.window.main.data[sample]["Height"][index]
-        
+        if pos is not None:
+            index = list(self.window.main.data[sample]["Height"].keys())[pos]
+            peak = self.window.main.data[sample]["Height"][index]
+        else:
+            peak = None
+    
         return peak
 
     def calculate_target_value(self, peak):
