@@ -130,10 +130,21 @@ class SequenceToExport(QLineEdit):
         self.create_validator()
         self.setPlaceholderText("Enter the sequence to export (ex : GCATGGCNGTCTT)")
         
+        
+        self.textChanged.connect(self.on_change)
+        
+    def on_change(self):
+        
+        cursor_pos = self.cursorPosition()    # Save the current cursor position
+          
+        self.setText(self.text().upper())     # Convert the text to uppercase
+              
+        self.setCursorPosition(cursor_pos)    # Convert the text to uppercase
+        
     def create_validator(self):
         # restricts input to G,A,T,C
         
-        regex = QRegExp("[GATCN(|)*]+")
+        regex = QRegExp("[GATCNgatcn(|)*]+")
         validator = QRegExpValidator(regex)
         self.setValidator(validator)
 
