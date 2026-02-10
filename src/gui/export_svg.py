@@ -38,23 +38,18 @@ class ExportSVG(QWidget):
         self.traceplotter = TracePlotter(self)
         
     def _create_widgets(self):
+        ''' create the widgets on the window '''
         
         # -- create widgets -- #
-        self.sample_list = SampleList(self.main.data)
-        self.target_sequence = EnterSequence(placeholder = "Enter the sequence subset to export (ex: GCATGGCNGTTCTT")
-        self.apply = ApplyButton(self)  # enter self and data
-        self.export = ExportButton(self)
-        self.cancel = CancelButton(self)
-        self.help_button = HelpButton(name="export_svg")
+        self.sample_list = SampleList(self.main.data)           # sample list to select the sample to display
+        self.target_sequence = EnterSequence(placeholder = "Enter the sequence subset to export (ex: GCATGGCNGTTCTT") # QLineEidt to enter the queried sequence to subset 
         
+        # create button widgets
+        self.apply = ApplyButton(self)                      #  apply button to apply parameters and change graphs
+        self.export = ExportButton(self)                    #  export button to export the canvas into .svg, .png, .jpg files
+        self.cancel = CancelButton(self)                    #  cancel button to close the window
+        self.help_button = HelpButton(name="export_svg")    #  help button to show help
         
-        
-        # -- create RadioButton to select file format -- #
-        self.png = SelectFileFormat(".png")
-        self.svg = SelectFileFormat(".svg")
-        self.svg.setChecked(True)
-        self.jpg = SelectFileFormat(".jpg")
-        self.tiff = SelectFileFormat(".tiff")
         
         # -- create option'''s to shortens or extend the sequence window -- #
         self.number_of_peak = TraceExtraLength(self)
@@ -62,41 +57,43 @@ class ExportSVG(QWidget):
         self.alert = Alert()
     
     def _create_canvas(self):
-        # create canvas to store the plot
+        ''' create the canvas to store the plot '''
         
-        self.fig, self.axes = plt.subplots()
-        self.canvas = FigureCanvas(self.fig)
+        self.fig, self.axes = plt.subplots()                # create the matplotlib figure and the axes 
+        self.canvas = FigureCanvas(self.fig)                # create canvas to contain the plot
         
-        self.axes.spines['top'].set_visible(False)
-        self.axes.spines['right'].set_visible(False)
-        self.axes.spines['bottom'].set_visible(False)
-        self.axes.spines['left'].set_visible(False)
+        self.axes.spines['top'].set_visible(False)          # remove all axes line
+        self.axes.spines['right'].set_visible(False)        # remove all axes line
+        self.axes.spines['bottom'].set_visible(False)       # remove all axes line
+        self.axes.spines['left'].set_visible(False)         # remove all axes line
         
-        self.axes.get_xaxis().set_ticks([])
-        self.axes.get_yaxis().set_ticks([])
+        self.axes.get_xaxis().set_ticks([])                 # remove x-axis ticks
+        self.axes.get_yaxis().set_ticks([])                 # remove y-axis ticks
         
     def _create_layout(self):
+        ''' create QGridLayout to position widgets in the window '''
         
         # -- create grid layout -- #
-        self.grid = QGridLayout()
-        self.grid.addWidget(self.target_sequence, 0,0,1,12)
-        self.grid.addWidget(CreateLabel(text="Select samples:"), 1,0,1,1)
-        self.grid.addWidget(self.sample_list, 2,0,9,4)
+        self.grid = QGridLayout()                                                          # create layout
+        self.grid.addWidget(self.target_sequence, 0,0,1,12)                                # Add QLineEdit to query sequence to layout      
+        self.grid.addWidget(CreateLabel(text="Select samples:"), 1,0,1,1)                  # Add description of QListWidget
+        self.grid.addWidget(self.sample_list, 2,0,9,4)                                     # Add ListWidget to select samples
         
-        self.grid.addWidget(QHSeparationLine(),11,0,1,4)
+        self.grid.addWidget(QHSeparationLine(),11,0,1,4)                                   # Create Line Separation of aesthetics
       
         # -- add widgets to set the options of the graphic -- #
-        self.grid.addWidget(CreateLabel(text = "Number of surrounding peaks"), 12,0,1,4)
-        self.grid.addWidget(CreateLabel(text = "Peaks:"), 13,0,1,1)
-        self.grid.addWidget(self.number_of_peak, 13,1,1,3)
+        self.grid.addWidget(CreateLabel(text = "Number of surrounding peaks"), 12,0,1,4)   # Add description of options
+        self.grid.addWidget(CreateLabel(text = "Peaks:"), 13,0,1,1)                        # Add description of Peaks to choose
+        self.grid.addWidget(self.number_of_peak, 13,1,1,3)                                 # QSpinBox to determine number of peak to show
        
-        self.grid.addWidget(self.help_button, 14,8)
+        # -- add QPushButton widgets
+        self.grid.addWidget(self.help_button, 14,8) 
         self.grid.addWidget(self.cancel,14,9)
         self.grid.addWidget(self.apply,14,10)
         self.grid.addWidget(self.export,14,11)
         
-        self.grid.addWidget(self.canvas, 1,4,13,8)
-        self.setLayout(self.grid)
+        self.grid.addWidget(self.canvas, 1,4,13,8)                                          # Add plot canvas
+        self.setLayout(self.grid)                                                           # set the layout
 
 class SampleList(QListWidget):
     
@@ -113,13 +110,12 @@ class SampleList(QListWidget):
         self.add_sample()
         
     def add_sample(self):
+        ''' add sample to the QListWidget '''
         
         # this function add new filenames to the list
         filenames = [x for x in self.data.keys()]
         self.addItems(filenames)
     
-
-
 
 class TracePlotter:
     
@@ -133,7 +129,8 @@ class TracePlotter:
         self.colors = {"G":"black", "T":"red", "A":"green","C":"blue"}
     
     def create_plot(self):
-    
+        ''' create the plot and add it to the canvas '''
+        
         # control that the input sequence meets the requirement (ie > 10 nt long, with a N for the target base)
         ctl = self.window.alert.control_input_sequence_requirement(sequence = self.window.target_sequence.text())
         if ctl == "FAILED":
@@ -145,23 +142,19 @@ class TracePlotter:
         # -- arrange the data to create the plot -- #
         self.arrange_data()
         
-        # -- subset the data -- #
-        number_of_samples = len(self.window.sample_to_analyze)
+        # -- determine number of row and columns to plot
+        number_of_samples = len(self.window.sample_to_analyze)          # number of sample to plot
+        row, cols = self._get_smallest_grid(number_of_samples)          # minimal number of rows and columns to fit all the plot
+        self.window.fig, self.window.axes = plt.subplots(row, cols)     # create the matplotlib figure
         
-        # determine number of row and columns to plot
-        row, cols = self.get_smallest_grid(number_of_samples)
-        self.window.fig, self.window.axes = plt.subplots(row, cols)
+        self.plot_traces(number_of_samples, row, cols)                  # add plot to the figure
         
-        self.plot_traces(number_of_samples, row, cols)
-        
-        # create alert
+        # -- create alert to show if the queried sequence is not found in samples
         if len(self.window.sample_to_analyze) < len(self.window.sample_list.selectedItems()):
-        
             self.window.alert.warning_unmatch_seq()
         
     def plot_traces(self, number_of_samples, row, cols):
-        
-        # create the traces and add it to canvas
+        ''' create the traces and add them to the canvas '''
         
         # -- adapt the title fontsize based on size -- #
         fs = 40**(18 / (18 + number_of_samples))
@@ -170,7 +163,7 @@ class TracePlotter:
         # -- create the plots -- #
         for i in range(number_of_samples):
             
-            subset = self.arranged_data[i]
+            subset = self.subset_data[i]
             
             trace, start, end = subset["Trace"], subset["Start"], subset["End"]
         
@@ -192,14 +185,14 @@ class TracePlotter:
                     axes[i].axis('off')
                     axes[i].set_title(subset["Name"], fontsize = fs)
             
-        # remove extra plot when number of samples cannot fit in a square
-        modulo = (row * cols)%number_of_samples
+        # -- remove extra plot when number of samples cannot fit in a square
+        modulo = (row * cols)%number_of_samples             # get modulo 
         
-        if modulo > 0 :
+        if modulo > 0 :                                     # if the layout does not match exactly the number of plot delete last plot
             
-            plot_to_del = number_of_samples - modulo + 1
+            plot_to_del = number_of_samples - modulo + 1    # determine the id of the plot to delete
             
-            for ax in axes[plot_to_del:]:
+            for ax in axes[plot_to_del:]:                   # remove all plot to delete
             
                 ax.remove()
     
@@ -230,29 +223,30 @@ class TracePlotter:
         self.window.alert.unmatch = no_match
         
     def arrange_data(self):
+        ''' extract data for each selected sample, subset based on the query sequence and store into a new dict '''
         
         # -- extract subsequence to plot -- #
-        query_seq = self.window.target_sequence.text().replace("N",".")
+        query_seq = self.window.target_sequence.text().replace("N",".")     # replace N nucleotide (=any) to "." for regex
         
         i = 0
-        self.arranged_data = {}
-        for s in self.window.sample_to_analyze:
+        self.subset_data = {}
+        for s in self.window.sample_to_analyze:                             # for each sample, extract information
         
             # -- extract sample infos -- #
-            seq = self.window.main.data[s]["Seq"]
-            ploc = self.window.main.data[s]["Ploc"]
-            traces = self.window.main.data[s]["Traces"]
+            seq = self.window.main.data[s]["Seq"]                           # get sequence of the sample
+            ploc = self.window.main.data[s]["Ploc"]                         # get list of peak location of the sample
+            traces = self.window.main.data[s]["Traces"]                     # get trace coordinate of the sample
             
             # -- get start and end position of the trace to export -- #
-            limits, subseq = self._get_plot_limits(query_seq, seq, ploc)
+            limits, subseq = self._get_plot_limits(query_seq, seq, ploc)    # extract peak coordinates from the query sequence
          
-            start, end = limits[0], limits[1]
+            start, end = limits[0], limits[1]                               # get start and end of the subset
             
-            self.arranged_data[i] = {"Name":s,  "SubSequence":subseq, "Trace": traces, "Start":start, "End":end}
+            self.subset_data[i] = {"Name":s,  "SubSequence":subseq, "Trace": traces, "Start":start, "End":end}    # store into a dict
         
             i += 1
          
-    def get_smallest_grid(self, n):
+    def _get_smallest_grid(self, n):
         # design the grid shape for the preview
         
         # Calculate the square root of n
