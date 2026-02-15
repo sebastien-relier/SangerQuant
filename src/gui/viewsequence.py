@@ -26,11 +26,13 @@ class ViewSequence(QWidget):
         self._create_layout()
 
     def _setup_window(self):
+        ''' create the window '''
         
         self.setWindowTitle("SangerQuant - View Sequences")
         self.resize(800, 600)
 
     def _create_widgets(self):
+        ''' create the widgets '''
         
         self._create_labels()
         self._create_textboxes()
@@ -39,15 +41,21 @@ class ViewSequence(QWidget):
         
         
     def _create_labels(self):
+        ''' create the labels above widgets '''
+        
         self.sample_label = CreateLabel("Samples")
         self.dna_label = CreateLabel("DNA sequence")
         self.protein_label = CreateLabel("Protein Sequence")
 
     def _create_textboxes(self):
+        ''' create the QPlainTextEdit '''
+        
         self.dna_sequence = SequenceTextBox()
         self.protein_sequence = SequenceTextBox()
 
     def _create_buttons(self):
+        ''' create the buttons '''
+        
         self.cancel = CancelButton(self)
         self.export_sequence = ExportButton(self)
 
@@ -60,12 +68,17 @@ class ViewSequence(QWidget):
         self.selected_frame = self.frame1
 
     def _create_sample_list(self):
+        ''' create sample list '''
+        
         filenames = list(self.main.data.keys())
         self.samples = SampleList(self, filenames)
         self.samples.setCurrentRow(self.main.samples.selected_index)
         self.samples.show_sequence(filenames[self.main.samples.selected_index])
 
     def _create_layout(self):
+        ''' create the layout that contains widgets '''
+        
+        
         layout = QGridLayout(self)
 
         # Labels
@@ -216,11 +229,13 @@ class SequenceTextBox(QTextEdit):
         self.cursor = self.textCursor()
         
     def add_seq_to_box(self, seq):
+        ''' add the sequence to QTextEdit box '''
         
         self.seq = seq
         self.setPlainText(self.seq)
 
     def change_text_color(self, target_string, color):
+        ''' change color of the subset sequence queried in the QLineEdit to search sequences '''
         
         if not target_string:
             return  # Avoid infinite loop if target_string is empty
