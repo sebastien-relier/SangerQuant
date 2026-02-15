@@ -29,6 +29,8 @@ from scrollbar import ScrollBar
 from sangerplot import SangerTraces
 from quantification_table import PeakQuant
 from export_raw_values import Exporter
+from reverse_complement import ReverseComplement
+from trim_sequence import TrimWindow
 
 
 #################################################
@@ -200,10 +202,7 @@ class EditMenu:
         
     
     def show_reverse_complement(self):
-        
-        # --  this function allow to reverse complement the sequences to analyze -- #
-        
-        from reverse_complement import ReverseComplement
+        ''' display reverse complement of the sequences '''
         
         reverse_comp = ReverseComplement(self.main)
         reverse_comp.get_reverse_complement()
@@ -212,9 +211,8 @@ class EditMenu:
         self.main.plot.create_plot()
     
     def trim_sequence(self):
-        
-        from trim_sequence import TrimWindow
-        
+        ''' open the window to trim the sequence '''
+
         # -- this function allows to trim the sequence of bad quality score phred -- #
         # trim 5' or 3' extremity of the sequence of bad quality
         trim_seq = TrimWindow(self.main)
@@ -249,18 +247,16 @@ class ViewMenu:
         
     
     def display_dna(self):
+        ''' open window to display DNA sequence and perform sequence operations '''
         
         self.viewseq = ViewSequence(self.main)
         self.viewseq.show()
     
     def compare_quality(self):
+        ''' open window to comparer overall sequence quality between samples '''
         
         self.quality_control = CompareQuality(self.main.data)
         self.quality_control.show()
-   
-    
-   
-    
    
 #################################################
 # TRACES MENU: modify aspect of the trace
@@ -311,6 +307,7 @@ class TracesMenu:
         
 
     def fill_peak(self):
+        ''' enable or disable color fill or the area under chromatograms '''
         
         # -- fill the chromatograms or not -- #
         if self.main.plot.fill == True:
@@ -323,6 +320,7 @@ class TracesMenu:
         self.main.plot.create_plot()
         
     def show_sequence(self):
+        ''' show / hide sequence below the trace plot '''
         
         status = self.main.plot.display_sequence
         
@@ -335,6 +333,8 @@ class TracesMenu:
         
         
     def _set_to_colorblind_mode(self):
+        ''' activate / deactivate colorblind mode of the trace '''
+        
         
         if  self.main.plot.colormode == "colorblind":
             self.main.plot.color_palette = self.main.plot.color.palettes["regular"]
@@ -346,17 +346,17 @@ class TracesMenu:
         self.main.plot.create_plot()
         
     def  _show_more_color_options(self):
-        
+        ''' display more color options '''
+    
         self.color_options = ColorWindow()
         self.color_options.show()
    
+        ## this part is not finished, may be released in another update
         
    
 #################################################
 # ANALYSIS MENU
 #################################################
-
-
 class AnalysisMenu:
     
     ''' create the menu to choose your analysis to perform '''
@@ -406,8 +406,6 @@ class AnalysisMenu:
         self.w = AlignmentWindow(self.main)
         self.w.show()
   
-        
-
 #################################################
 # HELPMENU
 #################################################
@@ -430,12 +428,10 @@ class HelpMenu():
 #################################################
 # MENUBAR
 #################################################
-    
 
 class MenuBar(QMainWindow):
     
     ''' create the menubar of the application '''
-    
     
     def __init__(self, main):
         
@@ -452,10 +448,8 @@ class MenuBar(QMainWindow):
         self.analysismenu = AnalysisMenu(self.menubar, self.main)
         self.helpmenu = HelpMenu(self.menubar)
         
-        
         self.activate_actions(False)
         
-   
     def activate_actions(self, status):
         ''' activate the actions of after loading the data '''
         
