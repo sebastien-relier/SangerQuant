@@ -20,6 +20,21 @@ from mismatch_whole_seq import QuantifyWholeSeq
 from alignment import AlignmentWindow
 from trace_color import ColorWindow
 
+from ab1Parser import ab1Parser
+
+from search_sequence import SearchSequence
+from filelist import SampleList
+from buttons import TraceShape
+from scrollbar import ScrollBar
+from sangerplot import SangerTraces
+from quantification_table import PeakQuant
+from export_raw_values import Exporter
+
+
+#################################################
+# FILE MENU: import / export datasets
+################################################# 
+
 class FileMenu:
     
     ''' CREATE THE FILEMENU OF THE APP AND ITS ASSOCIATED FUNCTIONS '''
@@ -49,7 +64,7 @@ class FileMenu:
         
 
     def open_ab1_file(self):
-      
+        ''' use QFileDialog and custom .ab1 parser to load ab1 data into the app '''
         # open ab1 file and parse data to store into dict
         
         # Create the QFileDialog
@@ -62,10 +77,10 @@ class FileMenu:
             return
         else:
             # -- import datasets -- #
-            self.parse_ab1_file(filenames)
+            self._parse_ab1_file(filenames)
             
             # -- create main window widget -- #
-            self.create_main_window_widgets()
+            self._create_main_window_widgets()
             
             # -- initialize the plot of the sanger trace of the first sample -- #
             self.main.samples.setCurrentRow(0)
@@ -77,9 +92,9 @@ class FileMenu:
             # -- change the style sheet of the menubar -- #
             self.main.menubar.activate_actions(True)
             
-    def parse_ab1_file(self, filenames):
+    def _parse_ab1_file(self, filenames):
         
-        from ab1Parser import ab1Parser
+        ''' parse .ab1 file to extract sequence, traces, quality etc ... '''
         
         for f in filenames[0]:
             
@@ -105,16 +120,10 @@ class FileMenu:
         # create a back-up of the data
         self.main.backup = copy.deepcopy(self.main.data)
         
-    def create_main_window_widgets(self):
+    def _create_main_window_widgets(self):
         
-        # import widgets #
-        from search_sequence import SearchSequence
-        from filelist import SampleList
-        from buttons import TraceShape
-        from scrollbar import ScrollBar
-        from sangerplot import SangerTraces
-        from quantification_table import PeakQuant
-        
+        ''' create the new widgets upon loading data (i.e: graphic canvas, sample list '''
+ 
         # -- create the QTable to store the quantification on QMainWindow -- #
         self.main.quantification = PeakQuant(self, rowlabel={"G":"black","A":"green","T":"red","C":"blue"})
         self.main.quantification.create_row_label()
@@ -151,13 +160,16 @@ class FileMenu:
        
 
     def export_raw_data(self):
-        # export peak height and quality per base for a single file
-
-        from export_raw_values import Exporter
         
+        ''' open window to export raw data of sanger traces '''
+
         self.exporter = Exporter(self.main, self.main.data)
         self.exporter.show()
         
+        
+#################################################
+# EDIT MENU: edit the traces
+#################################################          
     
 class EditMenu:
     
@@ -207,10 +219,13 @@ class EditMenu:
         # trim 5' or 3' extremity of the sequence of bad quality
         trim_seq = TrimWindow(self.main)
     
-        
+    
+#################################################
+# VIEW Menu: display important informations about the datasets
+#################################################   
 class ViewMenu:
     
-    ''' CREATE THE VIEW MENU OF THE APP '''
+    ''' create the view menu to show sequence, quality '''
     
     def __init__(self, menubar, main):
         
@@ -243,9 +258,17 @@ class ViewMenu:
         self.quality_control = CompareQuality(self.main.data)
         self.quality_control.show()
    
+    
+   
+    
+   
+#################################################
+# TRACES MENU: modify aspect of the trace
+#################################################
+   
 class TracesMenu:
     
-    ''' CREATE THE TRACE MENU OF THE APP '''
+    ''' create the menu to change the look of the traces '''
     
     def __init__(self, menubar, main):
         
@@ -326,11 +349,17 @@ class TracesMenu:
         
         self.color_options = ColorWindow()
         self.color_options.show()
+   
         
+   
+#################################################
+# ANALYSIS MENU
+#################################################
+
 
 class AnalysisMenu:
     
-    ''' CREATE THE VIEW MENU OF THE APP '''
+    ''' create the menu to choose your analysis to perform '''
     
     def __init__(self, menubar, main):
         
@@ -376,7 +405,14 @@ class AnalysisMenu:
         
         self.w = AlignmentWindow(self.main)
         self.w.show()
+  
         
+
+#################################################
+# HELPMENU
+#################################################
+
+
 class HelpMenu():
     
     ''' CREATE THE HELP MENU TO SEND TO DOCUMENTATION '''
@@ -388,8 +424,18 @@ class HelpMenu():
         # create actions on menubar
         self.menubar = menubar
         self.menubar.addMenu("&Help")
+   
         
+   
+#################################################
+# MENUBAR
+#################################################
+    
+
 class MenuBar(QMainWindow):
+    
+    ''' create the menubar of the application '''
+    
     
     def __init__(self, main):
         
@@ -411,7 +457,7 @@ class MenuBar(QMainWindow):
         
    
     def activate_actions(self, status):
-        # activate the actions after the data has been loaded into the app
+        ''' activate the actions of after loading the data '''
         
         # from the filemenu
         self.filemenu.exportAction.setEnabled(status)
