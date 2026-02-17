@@ -30,7 +30,7 @@ jobs:
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
         with:
-          name: windows-executable
+          name: windows-executable-sangerquant
           path: dist/
 
   build-macos:
@@ -59,7 +59,7 @@ jobs:
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
-          name: macos-app
+          name: macos-sangerquant
           path: dist/
 
   build-linux:
@@ -88,5 +88,5 @@ jobs:
       - name: Upload Linux artifact
         uses: actions/upload-artifact@v4
         with:
-          name: linux-executable
+          name: linux-executable-sangerquant
           path: dist/
