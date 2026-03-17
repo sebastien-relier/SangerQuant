@@ -33,6 +33,11 @@ This app is available as a standalone executable. Download the sangerquant zip f
 - unzip sangerquant.zip <br>
 - Run sangerquant with the command: cd sangerquant; ./sangerquant <br>
 
+## Windows
+This app is available as a standalone executable. Download the sangerquant zip folder [here](https://github.com/sebastien-relier/SangerQuant/releases/tag/v1.0.0)
+
+### Instructions
+
 # Tutorial
 ## Import data
 - Click on "File" of the menubar and click on "Import" <br>
