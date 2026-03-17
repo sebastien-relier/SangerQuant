@@ -39,16 +39,6 @@ This app is available as a standalone executable. Download the sangerquant zip f
 ### Instructions
 
 # Tutorial
-## Import data
-- Click on "File" of the menubar and click on "Import" <br>
-- Select .ab1 files from sanger traces and click open. Use mouse left click while pressing *shift* to select multiple files <br>
-- Click open on the pop-up window to import the selected files
-
-## Explore traces
-- Click on a filename in the list to display the trace
-- Use the scrollbar at the top or your mouse wheel to navigate along the sequence
-- To navigate directly to a specific sequence in the trace, enter the sequence in the textbox located below the trace
-
 ## How to Quantify Mismatch
 ### Quantify peaks height at a specific position from a single trace
 - Left-click on a peak from the trace to quantify peak heights, raw value will appear below the sample list on the bottom left
@@ -78,27 +68,6 @@ This app is available as a standalone executable. Download the sangerquant zip f
 6. Export the Mismatch Plot
     - Click the Export button to save the plot.
 
-## How to Edit the Sanger Traces
-### Trim Low-Quality Portions of the Trace
-1. Access the Trace Trimming Tool
-    - Navigate to Edit > Trim.
-
-2. Select Traces to Trim
-    - From the list, use your left mouse button to select the traces you want to trim.
-    - A plot showing Peak Quality (Phred Score) vs. Peak Position will appear. Higher values indicate better quality.
-
-3. Define the Area to Trim
-    - Left-click on the red vertical lines and drag them along the x-axis.
-    - The area between the red lines will be kept, while the outer shaded areas will be trimmed.
-
-4. Trim the Sequence
-    - Click Trim to apply the changes.
-    - (Optional) To undo, click Untrim.
-
-### Reverse-Complement the Traces
-
-1. Navigate to Edit > Reverse_complement.
-    - Check or uncheck the checkbox to reverse-complement the selected Sanger trace.
 
 
 
@@ -106,14 +75,3 @@ This app is available as a standalone executable. Download the sangerquant zip f
 
 
 
-## How to Customize Trace Appearance
-1. Show or Hide the Sequence
-    - Click on "Trace" in the menu.
-    - Check or uncheck the "Show_sequence" option to display or hide the sequence below the trace.
-2. Fill or Unfill the Area Under the Curve
-    - Click on "Trace" in the menu.
-    - Check or uncheck the "Fill" option to toggle the filled area under the curve.
-3. Adjust Peak Height
-    - Use the left slider below the trace (on the right side) to increase or decrease peak height.
-4. Zoom In or Out
-    - Use the right slider below the trace (on the right side) to zoom in or out.
