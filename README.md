@@ -11,7 +11,7 @@ This application supports .ab1 file format as input.
 Sanger sequencing remains the gold standard for identifying individual DNA sequences. Beyond sequence identification, it enables quantification of mismatch rates at specific positions by comparing the heights of overlapping peaks. This capability is invaluable for assessing the stoichiometry of RNA modifications, such as m5C, m7G, m1A, and ac4C, and for identifying genetic variants in mixed DNA populations. 
 <br>
 <br>
-However, existing software tools are limited to Sanger trace visualization and basic DNA sequence identification.  A critical gap exists in software capable of precisely quantifying peak heights to accurately determine mismatch rates. SangerQuant fills this gap by integrating Sanger trace visualization with advanced mismatch identification and quantification.
+However, existing software tools are limited to Sanger trace visualization and basic DNA sequence identification.  A critical gap exists in software capable of quantifying peak heights from several files at once. SangerQuant allows quantification nucleotide mismatch proportion in several samples
 </p>
 
 # Key features
