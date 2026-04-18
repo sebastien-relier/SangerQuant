@@ -6,9 +6,9 @@ Created on Mon Feb 21 13:08:15 2022
 @author: sebastien
 """
 
-from PyQt5.QtWidgets import QAction, QMainWindow, qApp, QFileDialog
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QMainWindow, QFileDialog
+from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtCore import Qt
 
 import copy
 import os
@@ -58,7 +58,7 @@ class FileMenu:
         # -- linked menu to actions -- #
         openAction.triggered.connect(self.open_ab1_file)
         self.exportAction.triggered.connect(self.export_raw_data)
-        exitAction.triggered.connect(qApp.quit)
+        exitAction.triggered.connect(self.main.close)
         
         # -- create the filemenu -- #
         self.filemenu = self.menubar.addMenu("&File")
@@ -71,7 +71,7 @@ class FileMenu:
         
         # Create the QFileDialog
         self.file_dialog = QFileDialog(parent=self.main)
-        self.file_dialog.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.file_dialog.setWindowFlags(Qt.WindowType.WindowStaysOnTopHint)
         
         filenames = self.file_dialog.getOpenFileNames(filter = "*.ab1*")
         
@@ -84,6 +84,8 @@ class FileMenu:
             # -- create main window widget -- #
             self._create_main_window_widgets()
             
+            
+            
             # -- initialize the plot of the sanger trace of the first sample -- #
             self.main.samples.setCurrentRow(0)
             self.main.samples.initialize_plot()
@@ -93,6 +95,9 @@ class FileMenu:
             
             # -- change the style sheet of the menubar -- #
             self.main.menubar.activate_actions(True)
+            
+            
+            print("haha")
             
     def _parse_ab1_file(self, filenames):
         
@@ -126,6 +131,7 @@ class FileMenu:
         
         ''' create the new widgets upon loading data (i.e: graphic canvas, sample list '''
  
+       
         # -- create the QTable to store the quantification on QMainWindow -- #
         self.main.quantification = PeakQuant(self, rowlabel={"G":"black","A":"green","T":"red","C":"blue"})
         self.main.quantification.create_row_label()
@@ -136,15 +142,18 @@ class FileMenu:
         self.main.samples = SampleList(self.main)
         self.main.layout_container.grid.addWidget(self.main.samples, 0,0,8,2)
        
-    
+        
         # -- create the scrollbar to move on the graph -- #
         self.main.scrollbar = ScrollBar(self.main)
         self.main.layout_container.grid.addWidget(self.main.scrollbar, 0,2,1,10)
+        
+        print("Scrollbar pass")
         
         # -- create the searchbar to seek out sequences -- #
         self.main.search = SearchSequence(self.main)
         self.main.layout_container.grid.addWidget(self.main.search, 9,2,1,8)
         
+        print("Search sequence pass")
         
         # -- create QSlider to change width of the traces
         self.trace_width = TraceShape(self.main, minimum=100, maximum=750, interval=50, value=450, connector="width")

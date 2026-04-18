@@ -8,9 +8,9 @@ Created on Sun Mar 30 23:09:31 2025
 
 
 
-from PyQt5.QtWidgets import QWidget, QFileDialog, QListWidget, QComboBox, QGridLayout, QAbstractItemView, QCheckBox, QPushButton,QLabel
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QFileDialog, QListWidget, QComboBox, QGridLayout, QAbstractItemView, QCheckBox, QPushButton,QLabel
+from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt
 import pyqtgraph as pg
 import pyqtgraph.exporters
 from buttons import CancelButton, ExportButton, HelpButton
@@ -25,7 +25,7 @@ class CompareQuality(QWidget):
     
     def __init__(self, data):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         self.data = data
         
@@ -219,7 +219,7 @@ class SampleList(QListWidget):
         self.window = window
         
         # -- create settings -- #
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.itemClicked.connect(self.itemClicked_event)
         
         # -- add filenames to list -- #

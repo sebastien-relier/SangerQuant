@@ -6,9 +6,9 @@ Created on Thu May 29 18:18:11 2025
 @author: sebastien
 """
 
-from PyQt5.QtWidgets import QPushButton, QSlider, QSizePolicy, QLabel, QFileDialog, QMessageBox, QLineEdit
-from PyQt5.QtGui import QIcon, QRegExpValidator
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt6.QtWidgets import QPushButton, QSlider, QSizePolicy, QLabel, QFileDialog, QMessageBox, QLineEdit
+from PyQt6.QtGui import QIcon, QRegularExpressionValidator
+from PyQt6.QtCore import Qt, QRegularExpression
 import pyqtgraph as pg
 
 class CancelButton(QPushButton):
@@ -187,7 +187,7 @@ class HelpButton(QPushButton):
     def display_help(self):
         
         msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
+        msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle(self.title)
         msg.setText(self.text)
         
@@ -224,7 +224,7 @@ class CreateLabel(QLabel):
         super().__init__()
         
         self.setText(text)
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         
 
 class TraceShape(QSlider):
@@ -232,7 +232,7 @@ class TraceShape(QSlider):
     ''' CREATE A QLSIDER TO CONTROL FOR TRACES HEIGHT, WIDTH '''
 
 
-    def __init__(self, main, connector = "height", orient = Qt.Horizontal, minimum = 1, maximum = 8, interval = 0.1, value=5):
+    def __init__(self, main, connector = "height", orient = Qt.Orientation.Horizontal, minimum = 1, maximum = 8, interval = 0.1, value=5):
         
         super().__init__()
         
@@ -244,7 +244,7 @@ class TraceShape(QSlider):
         self.setTickInterval(interval)
         self.setValue(value)
         
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
     
         if connector == "height":
             self.valueChanged[int].connect(self.change_height)
@@ -296,7 +296,7 @@ class EnterSequence(QLineEdit):
     def create_validator(self):
         # restricts input to G,A,T,C
         
-        regex = QRegExp("[GATCNgatcn(|)*]+")
-        validator = QRegExpValidator(regex)
+        regex = QRegularExpression("[GATCNgatcn(|)*]+")
+        validator = QRegularExpressionValidator(regex)
         self.setValidator(validator)
 

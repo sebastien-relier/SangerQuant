@@ -7,9 +7,19 @@ Created on Thu Apr 25 07:09:46 2024
 """
 
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QGridLayout, QListWidget, QSpinBox, QAbstractItemView, QFileDialog, QRadioButton, QMessageBox
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
+# ###########################
+# --- DESCRIPTION
+# This script create the window to export a subset of the traces in .svg format
+# How does it work ? You enter sequence in QLineEdit using a "N" at the position to center
+# This is perfect to generate sanger traces for figures quickly
+
+############################
+
+
+## IMPORT PACKAGES
+from PyQt6.QtWidgets import QWidget, QPushButton, QGridLayout, QListWidget, QSpinBox, QAbstractItemView, QFileDialog, QRadioButton, QMessageBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 from qline import QHSeparationLine
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -24,12 +34,14 @@ class ExportSVG(QWidget):
     
     def __init__(self, main):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         self.main = main
     
         self.setWindowTitle("SangerQuant - Batch Export of Selected Subsequences")
         self.resize(800, 600)
+        
+        self.setStyleSheet("background-color: light grey")
         
         self._create_widgets()
         self._create_canvas()
@@ -109,7 +121,7 @@ class SampleList(QListWidget):
         self.data = data
         
         # List widget parameters
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.add_sample()
         
     def add_sample(self):
@@ -404,13 +416,13 @@ class Alert(QWidget):
     
     def __init__(self):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         # add sample whithout any sequence matching to be display in QPlainTextEdit
         self.sample_not_found = []
     
         self.msg = QMessageBox()
-        self.wrong_sequence = self.create_alert(icon = QMessageBox.Critical, title = "Error ! Wrong input sequence", text = """The input sequence is missing critical informations:\n - Sequence must contain a letter N at a given position\n- Sequence can't be shorter than 10 nucleotides\n\n Example: GCATGGCNGTTCTT""")
+        self.wrong_sequence = self.create_alert(icon = QMessageBox.Icon.Critical, title = "Error ! Wrong input sequence", text = """The input sequence is missing critical informations:\n - Sequence must contain a letter N at a given position\n- Sequence can't be shorter than 10 nucleotides\n\n Example: GCATGGCNGTTCTT""")
         
         
         self.unmatch = []
@@ -449,7 +461,7 @@ class Alert(QWidget):
                 
                 text = text + "\n" + i
                 
-            msg = self.create_alert(icon=QMessageBox.Warning, title="Warning ! Sequence not found", text= text)
+            msg = self.create_alert(icon=QMessageBox.Icon.Warning, title="Warning ! Sequence not found", text= text)
             msg.show()
 
           

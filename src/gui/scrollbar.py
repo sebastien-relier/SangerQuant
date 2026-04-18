@@ -7,8 +7,8 @@ Created on Tue Jan 14 22:29:29 2025
 """
 
 # -- import package -- #
-from PyQt5.QtWidgets import QScrollBar
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QScrollBar
+from PyQt6.QtCore import Qt
 
 
 
@@ -24,7 +24,7 @@ class ScrollBar(QScrollBar):
         self.main = main
     
         ## CREATE THE SCROLLBAR
-        self.setOrientation(Qt.Horizontal)
+        self.setOrientation(Qt.Orientation.Horizontal)
         self.sliderMoved.connect(self.slider)
         self.setMouseTracking(True)
         

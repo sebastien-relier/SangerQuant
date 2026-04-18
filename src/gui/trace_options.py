@@ -5,8 +5,8 @@ Created on Wed Feb 28 19:54:43 2024
 
 @author: sebastien
 """
-from PyQt5.QtWidgets import QSlider, QSizePolicy
-from PyQt5.QtCore import *
+from PyQt6.QtWidgets import QSlider, QSizePolicy
+from PyQt6.QtCore import *
 
 class TraceShape(QSlider):
     

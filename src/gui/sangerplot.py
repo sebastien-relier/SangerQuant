@@ -9,9 +9,9 @@ Created on Wed Feb 23 19:13:10 2022
 
 # IMPORT PACKAGES
 import pyqtgraph as pg
-from PyQt5.QtWidgets import QWidget, QMenu
-from PyQt5.QtGui import QBrush, QColor, QFont
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QMenu
+from PyQt6.QtGui import QBrush, QColor, QFont
+from PyQt6.QtCore import Qt
 import re
 
 from trace_color import Color
@@ -194,7 +194,7 @@ class SangerTraces(pg.PlotWidget):
         
     def mouse_clicked(self, mouseClickEvent):
         
-        if mouseClickEvent.button() == Qt.LeftButton:
+        if mouseClickEvent.button() == Qt.MouseButton.LeftButton:
             # get raw coordinate of the mouse click
             x_cor = mouseClickEvent.pos()[0]
           
@@ -244,7 +244,9 @@ class QuantificationArea:
     
         # -- create rectangle between lines -- #
         self.fill = pg.QtWidgets.QGraphicsRectItem()
-        self.fill.setBrush(QBrush(QColor(200, 200, 255, 80)))  # translucent blue fill
+        brush = QBrush(QColor(200, 200, 255, 80))
+        
+        self.fill.setBrush(brush)  # translucent blue fill
         self.fill.setPen(pg.mkPen(None))  # no outline
     
     def define_quantification_area(self):

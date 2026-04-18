@@ -6,14 +6,18 @@ Created on Sun Mar 30 07:09:54 2025
 @author: sebastien
 """
 
-## TO DO LIST
-# - STORE THE TRIM PART INTO ANOTHER DICT
-# - UNTRIM SEQUENCE
+# ###########################
+# --- DESCRIPTION --- #
+# This script create the window to trim sequence based on user input
+# How does it work ? Move left and right sliders to trim sequences. Kept sequence will be in the middle
 
 
-from PyQt5.QtWidgets import QMainWindow, QListWidget, QPushButton, QAbstractItemView
-from PyQt5.QtGui import QBrush, QColor, QIcon
-from PyQt5.QtCore import Qt
+############################
+
+## IMPORT PACKAGES
+from PyQt6.QtWidgets import QMainWindow, QListWidget, QPushButton, QAbstractItemView
+from PyQt6.QtGui import QBrush, QColor, QIcon
+from PyQt6.QtCore import Qt
 from buttons import CancelButton, HelpButton
 import pyqtgraph as pg
 from layout import Layout
@@ -26,7 +30,7 @@ class TrimWindow(QMainWindow):
     
     def __init__(self, main):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         self.main = main
         
@@ -122,7 +126,7 @@ class TrimLimit:
         self.vline = pg.InfiniteLine(pos=pos, movable=True, bounds=[0, 800], pen=pg.mkPen('r', width=2))
 
         # -- RectItem to fill the area to the left -- #
-        self.fill = pg.QtGui.QGraphicsRectItem()
+        self.fill = pg.QtWidgets.QGraphicsRectItem()
         self.fill.setBrush(QBrush(QColor(200, 200, 255, 80)))  # translucent blue fill
         self.fill.setPen(pg.mkPen(None))  # no outline
         
@@ -174,7 +178,7 @@ class SampleList(QListWidget):
         self.window = window 
         
         # -- create settings -- #
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.itemClicked.connect(self.itemClicked_event)
         
         # -- add filenames to list -- #

@@ -6,7 +6,7 @@ Created on Tue Feb 22 18:33:40 2022
 @author: sebastien
 """
 
-from PyQt5.QtWidgets import QListWidget, QAbstractItemView
+from PyQt6.QtWidgets import QListWidget, QAbstractItemView
 
 
 class SampleList(QListWidget):

@@ -7,8 +7,8 @@ Created on Sat Dec 13 06:59:32 2025
 """
 
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QLineEdit, QListWidget, QAbstractItemView, QGridLayout, QPlainTextEdit, QLabel
-from PyQt5.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QPushButton, QLineEdit, QListWidget, QAbstractItemView, QGridLayout, QPlainTextEdit, QLabel
+from PyQt6.QtCore import Qt
 from qline import QHSeparationLine, QVSeparationLine
 from buttons import CancelButton, ExportButton, SettingButton, CreateLabel, HelpButton
 from align import Aligner
@@ -23,7 +23,7 @@ class QuantifyWholeSeq(QWidget):
 
     def __init__(self, main):
 
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
 
         self.setWindowTitle("SangerQuant - Find mismatches within a sequence")
         

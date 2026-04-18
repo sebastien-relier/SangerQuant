@@ -8,9 +8,9 @@ Created on Sun Apr  7 05:30:28 2024
 
 
 # -- IMPORT PACKAGES -- #
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog
-from PyQt5.QtGui import QIcon
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog
+from PyQt6.QtGui import QIcon
 from buttons import CancelButton, HelpButton, CreateLabel, EnterSequence
 from quantification_table import PeakQuant
 from export_to_csv import ExportToCsv
@@ -25,7 +25,7 @@ class ExportQuantification(QWidget):
 
     def __init__(self, main):
 
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
 
         self.setWindowTitle("SangerQuant - Batch Quantification of Mismatch")
         
@@ -334,7 +334,7 @@ class FileList(QListWidget):
 
     
         # allow multiple selection
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.itemClicked.connect(self.itemClicked_event)
 
         self.selected_samples = samples
@@ -398,7 +398,7 @@ class MessageBoxes(QMessageBox):
 
         # -- CREATE A WARNING WHEN THE SUB SEQUENCE IS FOUND SEVERAL TIMES WITHIN THE MAIN SEQUENCE (only one occurence allowed) -- #
         self.occ = QMessageBox()
-        self.occ.setIcon(QMessageBox.Warning)
+        self.occ.setIcon(QMessageBox.Icon.Warning)
         self.occ.setText(
             """
             In order to perform a batch quantification of variants across samples you must enter a query sequence of : \n 

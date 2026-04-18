@@ -61,7 +61,7 @@ class ReverseComplement():
         return res
     
     def change_sequence(self, sample):
-        # reverse complement the sequence
+        ''' update the sequence from data to perform the reverse complement '''
         
         sequence = list(self.main.data[sample]["Seq"])
         
@@ -74,7 +74,7 @@ class ReverseComplement():
         
     
     def change_traces(self, sample):
-        
+        ''' update the sequence from data to perform the reverse complement '''
         # -- changes traces -- #
     
         traces = self.main.data[sample]["Traces"]

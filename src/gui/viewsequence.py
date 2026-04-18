@@ -7,9 +7,9 @@ Created on Fri Mar 11 19:17:49 2022
 """
 
 
-from PyQt5.QtCore import Qt, QRegExp
-from PyQt5.QtWidgets import QWidget, QGridLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QListWidget, QTextEdit, QSizePolicy, QFileDialog, QListWidgetItem
-from PyQt5.QtGui import QRegExpValidator, QIcon, QColor, QTextCursor, QTextCharFormat
+from PyQt6.QtCore import Qt, QRegularExpression
+from PyQt6.QtWidgets import QWidget, QGridLayout, QRadioButton, QLabel, QLineEdit, QPushButton, QListWidget, QTextEdit, QSizePolicy, QFileDialog, QListWidgetItem
+from PyQt6.QtGui import QRegularExpressionValidator, QIcon, QColor, QTextCursor, QTextCharFormat
 from Bio.Seq import Seq
 from buttons import CancelButton
 
@@ -17,7 +17,7 @@ class ViewSequence(QWidget):
     '''Creates a window to display and interact with nucleotide sequences in FASTA format.'''
 
     def __init__(self, main):
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         self.main = main
 
@@ -110,8 +110,8 @@ class CreateLabel(QLabel):
     def __init__(self, text: str):
         super().__init__()
         self.setText(text)
-        self.setAlignment(Qt.AlignBottom)
-        self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        self.setAlignment(Qt.AlignmentFlag.AlignBottom)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
 
 class FrameButton(QRadioButton):
     '''Radio button to select the reading frame for translation.'''
@@ -141,8 +141,8 @@ class QuerySequence(QLineEdit):
         super().__init__()
         self.window = window
         self.setPlaceholderText("Search Sequence")
-        regex = QRegExp("[A-Za-z*]+")
-        validator = QRegExpValidator(regex)
+        regex = QRegularExpression("[A-Za-z*]+")
+        validator = QRegularExpressionValidator(regex)
         self.setValidator(validator)
         self.textChanged.connect(self.on_change)
 
@@ -178,10 +178,10 @@ class ExportButton(QPushButton):
         '''Opens a file dialog to save the sequence in FASTA format.'''
         file_dialog = QFileDialog(self)
         file_dialog.setWindowTitle("Save as")
-        file_dialog.setAcceptMode(QFileDialog.AcceptSave)
-        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
         file_dialog.setNameFilter("FASTA (*.fasta)")
-        if file_dialog.exec_():
+        if file_dialog.exec():
             selected_file = file_dialog.selectedFiles()[0]
             self.write_output(selected_file)
 
@@ -247,7 +247,7 @@ class SequenceTextBox(QTextEdit):
 
         for o in occ:
             cursor.setPosition(o)
-            cursor.setPosition(o + len(target_string), QTextCursor.KeepAnchor)
+            cursor.setPosition(o + len(target_string), QTextCursor.MoveMode.KeepAnchor)
 
             char_format = QTextCharFormat()
             char_format.setForeground(QColor(color))

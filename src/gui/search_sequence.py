@@ -8,9 +8,9 @@ Created on Sun Jul 27 12:42:39 2025
 
 
 
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QRegExpValidator
+from PyQt6.QtWidgets import QLineEdit
+from PyQt6.QtCore import QRegularExpression
+from PyQt6.QtGui import QRegularExpressionValidator
 import re
 
 class SearchSequence(QLineEdit):
@@ -32,8 +32,8 @@ class SearchSequence(QLineEdit):
         
         # -- allow the input of G,A,T,C only -- #
         
-        regex = QRegExp("[GATCNgatcn]+")
-        validator = QRegExpValidator(regex)
+        regex = QRegularExpression("[GATCNgatcn]+")
+        validator = QRegularExpressionValidator(regex)
         self.setValidator(validator)
 
     def onChange(self):

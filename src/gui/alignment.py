@@ -6,9 +6,9 @@ Created on Sun Dec 14 09:24:47 2025
 @author: sebastien
 """
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog, QTextEdit, QLabel, QRadioButton, QSpinBox
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont, QIcon
+from PyQt6.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog, QTextEdit, QLabel, QRadioButton, QSpinBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont, QIcon
 from qline import QHSeparationLine
 from buttons import CancelButton, CreateLabel, SettingButton, HelpButton, LoadButton
 from mismatch_whole_seq import ReferenceSeq
@@ -23,26 +23,36 @@ class AlignmentWindow(QWidget):
 
     def __init__(self, main):
 
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
 
+
+        print("Test alignment1")
         self.setWindowTitle("SangerQuant - Sequence alignment with a reference")
         self.resize(1200,850)
         
         # Import data
         self.main = main
-        self.alignment = MakeAlignment(self)
-        self.aligner = Aligner()
         
+        print("Test alignment1")
+        self.alignment = MakeAlignment(self)
+        
+        print("Test alignment1")
+        self.aligner = Aligner()
+        print("Test alignment2")
         # Init values
-        self.create_widgets()
-        self.create_layout()
+        self._create_widgets()
+        self._create_layout()
 
-    def create_widgets(self):
+    def _create_widgets(self):
 
         # create widgets
         self.sample_list = FileList(self, [key for key in self.main.data])
+        print("Test alignment1")
         self.reference_seq = ReferenceSeq(self)
+        print("Test alignment2")
         self.store_alignment = StoreAlignment(self)
+        
+        
         
         # create buttons
         self.cancelbutton = CancelButton(self)
@@ -53,7 +63,7 @@ class AlignmentWindow(QWidget):
         self.alignment_settings = AlignmentSettings(self)
         self.settingbutton = SettingButton(self.alignment_settings)
         
-    def create_layout(self):
+    def _create_layout(self):
 
         self.layout = QGridLayout(self)
 
@@ -92,7 +102,7 @@ class FileList(QListWidget):
         self.addItems(samples)
         
         # allow multiple selection
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.itemClicked.connect(self.itemClicked_event)
 
         self.selected_samples = samples
@@ -113,7 +123,7 @@ class StoreAlignment(QTextEdit):
         super().__init__()
         
         self.window = window
-        self.setAlignment(Qt.AlignCenter)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setReadOnly(True)
         
         # init font
@@ -264,7 +274,7 @@ class AlignmentSettings(QWidget):
     
     def __init__(self, window):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
         
         # create window
         self.window = window

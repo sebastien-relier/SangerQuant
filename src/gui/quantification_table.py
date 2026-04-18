@@ -9,9 +9,9 @@ Created on Mon Mar 17 16:58:41 2025
 
 ## LOAD PACKAGES 
 
-from PyQt5.QtGui import QFont, QBrush, QColor
-from PyQt5.QtWidgets import QTableWidget, QPushButton, QMenu, QAction, QAbstractItemView, QHeaderView, QApplication, QTableWidgetItem,  QAbstractScrollArea
-from PyQt5.QtCore import *
+from PyQt6.QtGui import QFont, QBrush, QColor, QAction
+from PyQt6.QtWidgets import QTableWidget, QPushButton, QMenu,  QAbstractItemView, QHeaderView, QApplication, QTableWidgetItem,  QAbstractScrollArea
+from PyQt6.QtCore import Qt
 
 ## CREATE TABLE TO STORE VALUES OF G A T C
 class PeakQuant(QTableWidget):
@@ -33,16 +33,17 @@ class PeakQuant(QTableWidget):
         self.setColumnCount(ncol)
         
         # -- cancel editable feature of the qtablewidget -- #
-        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setHorizontalHeaderLabels(header)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         
         
         
         
         # -- set the right click menu to copy to clipboard -- #
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.showContextMenu)
+        
         
     
     def create_row_label(self):
@@ -126,7 +127,7 @@ class PeakQuant(QTableWidget):
        contextMenu.addAction(copyAction)
 
        # Show the context menu at the requested position
-       contextMenu.exec_(self.viewport().mapToGlobal(pos))
+       contextMenu.exec(self.viewport().mapToGlobal(pos))
 
     def copySelection(self):
        # Get the selected items

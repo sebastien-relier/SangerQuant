@@ -8,9 +8,9 @@ Created on Thu Aug  7 03:40:15 2025
 
 
 ## IMPORT PACKAGES
-from PyQt5.QtWidgets import QWidget, QRadioButton, QGridLayout, QListWidget,  QPushButton, QAbstractItemView, QLineEdit, QLabel, QFileDialog
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget, QRadioButton, QGridLayout, QListWidget,  QPushButton, QAbstractItemView, QLineEdit, QLabel, QFileDialog
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QIcon
 from buttons import CancelButton
 from quantification_table import PeakQuant
 from export_to_csv import ExportToCsv
@@ -23,14 +23,14 @@ class Exporter(QWidget):
     
     def __init__(self, main, data):
         
-        super().__init__(None, Qt.WindowStaysOnTopHint)
+        super().__init__(None, Qt.WindowType.WindowStaysOnTopHint)
 
         self.main = main
         self.data = data
         
         self._setup_window()
-        self.create_widgets()
-        self.create_layout()        
+        self._create_widgets()
+        self._create_layout()        
         
         
     def _setup_window(self):
@@ -38,7 +38,7 @@ class Exporter(QWidget):
         self.setWindowTitle("SangerQuant - Export Raw Data")
         self.resize(1200,800)
         
-    def create_widgets(self):
+    def _create_widgets(self):
         
         self.cancel = CancelButton(self)
         self.export = ExportButton(self)
@@ -58,7 +58,7 @@ class Exporter(QWidget):
         self.preview_table = PeakQuant(self, header= ["Base","Phred",  "G","A","T","C"], nrow = 20, ncol=6)
         self.samples = SampleList(self, items = [key for key in self.data])
         
-    def create_layout(self):
+    def _create_layout(self):
         
         self.grid = QGridLayout()
         
@@ -181,7 +181,7 @@ class SampleList(QListWidget):
         super().__init__()
         
         self.window = window  
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.addItems(items)
         
         
