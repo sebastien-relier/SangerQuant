@@ -7,7 +7,7 @@ Created on Wed Jan 14 18:00:48 2026
 """
 
 
-from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
+from PyQt6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
 
 
 class Color:

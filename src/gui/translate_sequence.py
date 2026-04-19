@@ -7,9 +7,9 @@ Created on Tue Mar 15 20:49:43 2022
 """
 from Bio.Seq import Seq
 
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
 
 
 
