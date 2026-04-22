@@ -287,14 +287,14 @@ class Calculator:
         return value_of_reference
 
     def calculate_transition(self, target, reference):
+        ''' calculate the transition between target and reference base at select ed position '''
 
-        if reference > 0:
+        if reference == 0 and target == 0:
+            transition = None
+        else:
             transition = (target / (target + reference)) * 100
             transition = round(transition, 2)
-        elif reference == 0 and target > 0:
-            transition = 100
-        elif reference == 0 and target == 0:
-            transition = None
+        
             
         return transition
 
