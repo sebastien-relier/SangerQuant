@@ -7,6 +7,23 @@ Created on Sun Apr  7 05:30:28 2024
 """
 
 
+
+## ########################################"
+# SCRIPT DESCRIPTION
+# CREATE THE WINDOW TO QUANTIFY MISMATCH FROM A BATCH OF SANGER SEQUENCING SAMPLES
+
+
+
+
+
+########################################"
+
+
+
+
+
+
+
 # -- IMPORT PACKAGES -- #
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog
@@ -295,7 +312,6 @@ class Calculator:
             transition = (target / (target + reference)) * 100
             transition = round(transition, 2)
         
-            
         return transition
 
     
