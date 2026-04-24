@@ -41,7 +41,7 @@ class ExportSVG(QWidget):
         self.setWindowTitle("SangerQuant - Batch Export of Selected Subsequences")
         self.resize(800, 600)
         
-        self.setStyleSheet("background-color: lightgrey")
+        
         
         self._create_widgets()
         self._create_canvas()
