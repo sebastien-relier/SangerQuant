@@ -21,9 +21,6 @@ Created on Sun Apr  7 05:30:28 2024
 
 
 
-
-
-
 # -- IMPORT PACKAGES -- #
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog

@@ -147,14 +147,11 @@ class FileMenu:
         self.main.scrollbar = ScrollBar(self.main)
         self.main.layout_container.grid.addWidget(self.main.scrollbar, 0,2,1,10)
         
-        print("Scrollbar pass")
-        
         # -- create the searchbar to seek out sequences -- #
         self.main.search = SearchSequence(self.main)
         self.main.layout_container.grid.addWidget(self.main.search, 9,2,1,8)
         
-        print("Search sequence pass")
-        
+      
         # -- create QSlider to change width of the traces
         self.trace_width = TraceShape(self.main, minimum=100, maximum=750, interval=50, value=450, connector="width")
         self.main.layout_container.grid.addWidget(self.trace_width, 9,11,1,1)  
@@ -301,7 +298,7 @@ class TracesMenu:
         
         
         # -- connect the actions to their functions -- #
-        self.fillAction.triggered.connect(self.fill_peak)
+        self.fillAction.triggered.connect(self._fill_peak)
         self.seqAction.triggered.connect(self.show_sequence)
         self.quickcolorAction.triggered.connect(self._set_to_colorblind_mode)
         self.morecolorAction.triggered.connect(self._show_more_color_options)
@@ -315,15 +312,16 @@ class TracesMenu:
         #self.menu.addAction(self.morecolorAction) # will be a new feature for next release
         
 
-    def fill_peak(self):
+    def _fill_peak(self):
         ''' enable or disable color fill or the area under chromatograms '''
         
+        
         # -- fill the chromatograms or not -- #
-        if self.main.plot.fill == True:
-            self.main.plot.fill = False
+        if self.main.trace_color.fill == True:
+            self.main.trace_color.fill = False
             self.fillAction.setChecked(False)
         else:    
-            self.main.plot.fill = True
+            self.main.trace_color.fill = True
             self.fillAction.setChecked(True)
             
         self.main.plot.create_plot()
@@ -344,14 +342,13 @@ class TracesMenu:
     def _set_to_colorblind_mode(self):
         ''' activate / deactivate colorblind mode of the trace '''
         
-        
-        if  self.main.plot.colormode == "colorblind":
-            self.main.plot.color_palette = self.main.plot.color.palettes["regular"]
-            self.main.plot.colormode = "regular"
+        ## change palette 
+        if self.main.trace_color.palette_name == "colorblind":
+            self.main.trace_color.change_palettes("regular")
         else:
-            self.main.plot.color_palette = self.main.plot.color.palettes["colorblind"]
-            self.main.plot.colormode = "colorblind"
+            self.main.trace_color.change_palettes("colorblind")
         
+        ## create plot
         self.main.plot.create_plot()
         
     def  _show_more_color_options(self):

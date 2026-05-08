@@ -33,18 +33,12 @@ class SangerTraces(pg.PlotWidget):
     def __init__(self, main):
         
         super().__init__()
-    
-        # import the main class
+
         self.main = main
     
-        # set the parameters of the plot
         self._initialize_figure()
-        
-        ## Parameters for the plot look and shape
         self._initialize_parameters()
-        self._initialize_trace_color()
-        
-        #
+     
         self.subseq = ""
         
         self.quantification_area = QuantificationArea(self)
@@ -83,22 +77,12 @@ class SangerTraces(pg.PlotWidget):
         plot_item.buttonsHidden = True
         
         # -- set parameters for the look of the lineplot to show the traces -- #
-        self.fill = True
         self.antialias = True
         self.linewidth = 0.5
         
         self.display_sequence = True
         self.show_quality = False
-  
-    def _initialize_trace_color(self):
-        
-        self.colormode = "regular"
-        
-        self.color = Color()
-        self.color_palette = self.color.palettes["regular"]
-        
-        
-    
+
     def _override_context_menu(self):
         
         self.plotItem.ctrlMenu = None
@@ -130,10 +114,10 @@ class SangerTraces(pg.PlotWidget):
             
             size = len(traces[nuc])
             
-            fill_color = self.color_palette["fill"][nuc]
-            line_color = self.color_palette["line"][nuc]
+            fill_color = self.main.trace_color.palettes["fill"][nuc]
+            line_color = self.main.trace_color.palettes["line"][nuc]
             
-            if self.fill == True:
+            if self.main.trace_color.fill == True:
                 self.plot(x = range(size), y= traces[nuc], fillLevel =-0.3 ,brush=fill_color, pen=pg.mkPen(line_color, width=self.linewidth))
             else:
                 self.plot(x = range(size), y= traces[nuc], fillLevel =-0.3, pen=pg.mkPen(line_color, width=2))
@@ -205,6 +189,7 @@ class SangerTraces(pg.PlotWidget):
             closest_peak = min(self.ploc, key=lambda x:abs(x-pos_adjusted))
             where = self.ploc.index(closest_peak)
             
+            
             self.update_quantification_line(where, closest_peak)
             
     def wheelEvent(self, event):
@@ -228,6 +213,17 @@ class SangerTraces(pg.PlotWidget):
             self.show_sequence.hide_sequence_from_traces()
         else:
             self.show_sequence.show_sequence_from_traces()
+    
+    
+    
+    def pass_selected_peak_to_quantification_table(self, peak_pos):
+        ''' pre-determine the sequence to quantify to the quantification table | peak_pos = selected peak_location '''
+        
+        #self.main.data[selected_sample]["Traces"]
+        pass
+    
+    
+    
     
 class QuantificationArea:
     
@@ -325,7 +321,7 @@ class ShowSequence(QWidget):
             
             if (self.trace.xpos <= x <= self.trace.xpos + self.trace.xwindow):
                 
-                nuc = pg.TextItem(text=y, color=self.trace.color_palette["line"][y], anchor=(0.0,0.0))
+                nuc = pg.TextItem(text=y, color=self.trace.main.trace_color.palettes["line"][y], anchor=(0.0,0.0))
                 nuc.setPos(x - 2, 10)
                 nuc.setFont(font)
                 
@@ -359,12 +355,7 @@ class ShowSequence(QWidget):
                 
                 self.trace.addItem(nuc)
                 self.text_items.append(nuc)
-    
-    
-    
-    
-    
-    
+
     def show_sequence_from_traces(self):
     
         for item in self.text_items:

@@ -10,6 +10,43 @@ Created on Wed Jan 14 18:00:48 2026
 from PyQt6.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton
 
 
+palettes = {
+    "regular":{
+            "fill":
+                {
+                "T":(255,0,0,50),
+                "C":(50,50,200,50),
+                "A":(0,100,0,50),
+                "G":(0,0,0,50)
+                },
+            "line":
+                {"T":(255,0,0),
+                 "C":(50,50,200),
+                 "A":(0,100,0),
+                 "G":(0,0,0), 
+                 "N":(169, 169, 169),
+                 }
+            },
+        "colorblind":{
+            "fill":
+                {
+                "T":(213,94,0,70),
+                "C":(0,114,178, 70),
+                "A":(0,158,115, 70),
+                "G":(204,121,167, 70)
+                },
+            "line":
+                {"T":(213,94,0),
+                 "C":(0,114,178),
+                 "A":(0,158,115),
+                 "G":(204,121,167), 
+                 "N": (169, 169, 169),
+                 }
+            }
+        }
+
+
+
 class Color:
     
     ''' SET THE COLOR OF THE TRACE '''
@@ -18,40 +55,17 @@ class Color:
         
         super().__init__()
         
-        self.palettes = {
-            "regular":{
-                    "fill":
-                        {
-                        "T":(255,0,0,50),
-                        "C":(50,50,200,50),
-                        "A":(0,100,0,50),
-                        "G":(0,0,0,50)
-                        },
-                    "line":
-                        {"T":(255,0,0),
-                         "C":(50,50,200),
-                         "A":(0,100,0),
-                         "G":(0,0,0), 
-                         "N":"darkgrey"
-                         }
-                    },
-                "colorblind":{
-                    "fill":
-                        {
-                        "T":(213,94,0,70),
-                        "C":(0,114,178, 70),
-                        "A":(0,158,115, 70),
-                        "G":(204,121,167, 70)
-                        },
-                    "line":
-                        {"T":(213,94,0),
-                         "C":(0,114,178),
-                         "A":(0,158,115),
-                         "G":(204,121,167), 
-                         "N":"darkgrey"
-                         }
-                    }
-                }
+        self.palettes = palettes["regular"]
+        self.palette_name = "regular"
+        
+        self.fill = True
+
+    
+    def change_palettes(self, palette):
+        
+        self.palette_name = palette
+        self.palettes = palettes[palette]
+        
     
 
 

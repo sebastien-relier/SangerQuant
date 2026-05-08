@@ -39,9 +39,8 @@ class ExportSVG(QWidget):
         self.main = main
     
         self.setWindowTitle("SangerQuant - Batch Export of Selected Subsequences")
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint, True)
         self.resize(800, 600)
-        
-        
         
         self._create_widgets()
         self._create_canvas()
@@ -58,8 +57,6 @@ class ExportSVG(QWidget):
         self.export = ExportButton(self)
         self.cancel = CancelButton(self)
         self.help_button = HelpButton(name="export_svg")
-        
-        
         
         # -- create RadioButton to select file format -- #
         self.png = SelectFileFormat(".png")
@@ -143,9 +140,10 @@ class TracePlotter:
         
         self.window = window
         self.colors = {"G":"black", "T":"red", "A":"green","C":"blue"}
-    
+        
+  
     def create_plot(self):
-    
+        
         # control that the input sequence meets the requirement (ie > 10 nt long, with a N for the target base)
         ctl = self.window.alert.control_input_sequence_requirement(sequence = self.window.target_sequence.text())
         if ctl == "FAILED":
@@ -183,17 +181,26 @@ class TracePlotter:
         
         return font_size
 
-               
+    def _determine_trace_look(self):
+        ''' import whether trace must be filled and color palettes from trace_color '''
         
+        fill = self.window.main.trace_color.fill                 # import fill or not
+        color = self.window.main.trace_color.palettes["line"].copy()    # import color palettes
         
-    
+        # convert color rgb to values between 0 and 1 to fit matplotlib requirements
+        for key in color:
+            color[key] = [int(x) / 255 for x in color[key]]
+        
+        return fill, color
+
     
     def plot_traces(self, number_of_samples, row, cols):
         ''' create plot to add to the canvas '''
-    
+        
+        fill_status, color = self._determine_trace_look()   # Import trace color and fill status
+        
+        # Adjust title fontsize based on the number of selected samples
         fs = self._determine_title_font_size(self.window.sample_to_analyze, row, cols)
-        
-        
         
         # -- create the plots -- #
         for i in range(number_of_samples):
@@ -206,19 +213,24 @@ class TracePlotter:
                 axes = self.window.axes
             
                 for nuc, in trace.keys():
-                    axes.plot(trace[nuc][start:end], color= self.colors[nuc])
+        
+                    axes.plot(trace[nuc][start:end], color= color[nuc])
                     axes.axis('off')
                     axes.set_title(subset["Name"], fontsize = fs)
-            
+                    
+                    if (fill_status is True):
+                        axes.fill_between(trace[nuc][start:end], 0, color= self.colors[nuc]) 
+                    
             else:
                 
                 # -- flatten the ax for easier iteration
                 axes = self.window.axes.flatten()
         
                 for nuc in trace.keys():
-                    axes[i].plot(trace[nuc][start:end], color = self.colors[nuc])
+                    axes[i].plot(trace[nuc][start:end], color = color[nuc])
                     axes[i].axis('off')
                     axes[i].set_title(subset["Name"], fontsize = fs)
+            
             
         # remove extra plot when number of samples cannot fit in a square
         modulo = (row * cols)%number_of_samples
