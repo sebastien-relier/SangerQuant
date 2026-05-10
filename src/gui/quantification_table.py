@@ -103,10 +103,8 @@ class PeakQuant(QTableWidget):
             for c in range(col):
                
                 self.setItem(r,c, None)
-        
     
     def rename_headers(self, new_header):
-        
         
         self.setColumnCount(len(new_header))
         
@@ -114,58 +112,59 @@ class PeakQuant(QTableWidget):
         self.setHorizontalHeaderLabels(new_header)
     
     
-    
-    
     def showContextMenu(self, pos):
+        ''' functon to show the context when right clicking on the table | allow to copy value into clipboard '''
+         
+        # -- create a context menu -- #
+        contextMenu = QMenu(self)
         
-       # -- create a context menu -- #
-       contextMenu = QMenu(self)
-
-       # Add a "Copy" action to the menu
-       copyAction = QAction("Copy", self)
-       copyAction.triggered.connect(self.copySelection)
-       contextMenu.addAction(copyAction)
-
-       # Show the context menu at the requested position
-       contextMenu.exec(self.viewport().mapToGlobal(pos))
+        # Add a "Copy" action to the menu
+        copyAction = QAction("Copy", self)
+        copyAction.triggered.connect(self.copySelection)
+        contextMenu.addAction(copyAction)
+        
+        # Show the context menu at the requested position
+        contextMenu.exec(self.viewport().mapToGlobal(pos))
 
     def copySelection(self):
-       # Get the selected items
-       selected = self.selectedItems()
-
-       if not selected:
-           return
-
-       # Sort the selected items by row and column
-       selected.sort(key=lambda x: (x.row(), x.column()))
-
-       # Create a string with the selected items
-       text = ""
-       prev_row = selected[0].row()
-       
-       # -- add header to text -- #
-       for h in self.header:
+        ''' function to copy values from context menu into clipboard '''
+         
+        # Get the selected items
+        selected = self.selectedItems()
+        
+        if not selected:
+            return
+        
+        # Sort the selected items by row and column
+        selected.sort(key=lambda x: (x.row(), x.column()))
+        
+        # Create a string with the selected items
+        text = ""
+        prev_row = selected[0].row()
+        
+        # -- add header to text -- #
+        for h in self.header:
+            
+            text += h + "\t"
+        
+        text += "\n"
+        
+        # -- add cell content to text -- #
+        for item in selected:
            
-           text += h + "\t"
-       
-       text += "\n"
-       
-       # -- add cell content to text -- #
-       for item in selected:
-          
-           
-           if item.row() != prev_row:
-               text += "\n"
-               prev_row = item.row()
-           text += item.text() + "\t"
-
-       # Remove the trailing tab character
-       text = text.rstrip("\t")
-       
-       # Copy the text to the clipboard
-       clipboard = QApplication.clipboard()
-       clipboard.setText(text)
-    
+            
+            if item.row() != prev_row:
+                text += "\n"
+                prev_row = item.row()
+            text += item.text() + "\t"
+        
+        # Remove the trailing tab character
+        text = text.rstrip("\t")
+        
+        # Copy the text to the clipboard
+        clipboard = QApplication.clipboard()
+        clipboard.setText(text)
+ 
     
                 
                 

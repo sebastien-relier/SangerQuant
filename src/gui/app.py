@@ -18,6 +18,10 @@ from time import time, sleep
 from trace_color import Color
 import resources_rc
 
+
+from export_quantification import ExportQuantification
+from export_svg import ExportSVG
+
 class Main(QMainWindow):
 
     ''' creates the main window with the menubar | toolbar | the layout '''
@@ -42,6 +46,11 @@ class Main(QMainWindow):
         ## -- intialize the data storage -- ##
         self.data = {}
 
+
+        # init analyses windows
+        self._initialize_analysis_subwindows()
+
+
     def _resize_window(self):
 
         screen = QGuiApplication.primaryScreen().geometry()
@@ -49,6 +58,13 @@ class Main(QMainWindow):
         self.resize(screen.width(), screen.height())
         # Move the window to the top-left corner of the screen
         self.move(0, 0)
+        
+        
+    def _initialize_analysis_subwindows(self):
+        ''' create the subwindows for the different type of analysis | those window will be shown later  '''
+        
+        self.quantification_transition = ExportQuantification(self) # table to calculate and export mismatch across samples
+        self.subsequence_exporter = ExportSVG(self)
 
 if __name__=="__main__":
 

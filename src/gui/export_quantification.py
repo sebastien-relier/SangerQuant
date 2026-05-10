@@ -50,8 +50,6 @@ class ExportQuantification(QWidget):
         self.create_widgets()
         self.create_layout()
 
-        self.show()
-
     def create_widgets(self):
 
         # create list of sample
@@ -216,6 +214,7 @@ class Calculator:
             
             self.res.append(transition_list)
     
+        print(transition_value)
         self._update_table() # update the table
          
     def _create_new_header(self):
@@ -313,6 +312,7 @@ class Calculator:
 
     
     def _update_table(self):
+      ''' update the quantification table to add new header | transition values | and sample names '''
       
       # -- write the results into a QTableWidget -- #
       self.window.results.rename_headers(self.header)

@@ -11,7 +11,7 @@ Created on Wed Feb 23 19:13:10 2022
 import pyqtgraph as pg
 from PyQt6.QtWidgets import QWidget, QMenu
 from PyQt6.QtGui import QBrush, QColor, QFont
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QObject, QEvent
 import re
 
 from trace_color import Color
@@ -36,6 +36,8 @@ class SangerTraces(pg.PlotWidget):
 
         self.main = main
     
+        self.mouse_handler = MouseEvent(self) # init mouse Event
+    
         self._initialize_figure()
         self._initialize_parameters()
      
@@ -47,11 +49,18 @@ class SangerTraces(pg.PlotWidget):
         # change context menu from right click
         self._override_context_menu()
         
+        
+    
+        
+        
     def _initialize_figure(self):
         # create the plot and its mouse click options
         
          # connect the widget to mouse clicking
-        self.scene().sigMouseClicked.connect(self.mouse_clicked) 
+        self.installEventFilter(self.mouse_handler)
+        self.getPlotItem().getViewBox().installEventFilter(self.mouse_handler)
+        self.scene().sigMouseClicked.connect(self.mouse_handler.on_click) 
+        
     
         self.setMouseEnabled(x = False, y = False)
         self.getPlotItem().hideAxis("left")
@@ -83,22 +92,11 @@ class SangerTraces(pg.PlotWidget):
         self.display_sequence = True
         self.show_quality = False
 
-    def _override_context_menu(self):
-        
-        self.plotItem.ctrlMenu = None
-        
-        view_box = self.plotItem.getViewBox()
-        view_box_menu = view_box.menu
-
-        # Iterate through the actions in the ViewBox menu
-        for action in view_box_menu.actions():
-            if "Export" in action.text():
-                action.setVisible(True)
-            else:
-                action.setVisible(False)
-            
+    
     def create_plot(self):
-           
+        ''' create the sanger traces plot to the main window '''
+        
+
         # -- set-up anti-aliasing for smooth plot -- #
         pg.setConfigOptions(antialias = self.antialias)
         
@@ -126,7 +124,7 @@ class SangerTraces(pg.PlotWidget):
         # -- add sequence to chromatograms -- #
         if self.display_sequence != False:
             self.show_sequence.update_text_items()
-  
+      
         # -- go to subsequence if any -- #
         if len(self.subseq) > 0:
             self.go_to_subsequence()
@@ -134,6 +132,22 @@ class SangerTraces(pg.PlotWidget):
         # -- show the graphs -- #
         self.main.layout_container.grid.addWidget(self, 1,2, 8, 10)      
         self.setXRange(self.xpos, self.xpos + self.xwindow)
+
+    def _override_context_menu(self):
+        
+        self.plotItem.ctrlMenu = None
+        
+        view_box = self.plotItem.getViewBox()
+        view_box_menu = view_box.menu
+
+        # Iterate through the actions in the ViewBox menu
+        for action in view_box_menu.actions():
+            if "Export" in action.text():
+                action.setVisible(True)
+            else:
+                action.setVisible(False)
+            
+
     
     def update_sequence_pos(self):
         
@@ -176,52 +190,106 @@ class SangerTraces(pg.PlotWidget):
         self.main.quantification.update_table(data = res)
         self.main.quantification.create_row_label()
         
-    def mouse_clicked(self, mouseClickEvent):
+        
+    def create_subsequence_with_N_at_clicked_position(self, peak_pos):
+        ''' create new subsequence based on selected peak | selected peak letter is replaced with N to match any nt for quantification '''
+        
+        if peak_pos < 10:
+            r = self.seq[:peak_pos] + "N" + self.seq[peak_pos+1:peak_pos + 10]
+        elif peak_pos > len(self.seq) - 10:
+            r = self.seq[peak_pos -10: peak_pos] + "N" + self.seq[peak_pos + 1:]
+        else:
+            r = self.seq[peak_pos - 10: peak_pos] + "N" + self.seq[peak_pos+1:peak_pos + 10]
+        
+        return r
+    
+    
+    def pass_selected_peak_to_quantification_table(self, subseq):
+        ''' change quantification transition table based on surrounding subseq of selected peak'''
+
+        self.main.quantification_transition.queried_sequence.setText(subseq)    # pass subseq to LineEdit to select sequence to analyze
+        self.main.quantification_transition.sample_list.selectAll()             # select all sample for analysis
+
+    def pass_selected_peak_to_subsequence_exporter(self, subseq):
+        ''' change subsequence visualized bqsed on surrounding sequence of the selected peak '''
+        
+        self.main.subsequence_exporter.target_sequence.setText(subseq) 
+        self.main.subsequence_exporter.sample_list.selectAll() 
+        self.main.subsequence_exporter.apply.create_preview_plot()
+        
+    
+class MouseEvent(QObject):
+    
+    '''
+    class to contains all the mouse functions to the sanger plot | 
+    left click > peak selection and quantification,
+    right click > open context menu to export to svg
+    mouse wheel > scroll the plot to visualize
+        
+    '''
+    
+    def __init__(self, window):
+        
+        super().__init__()
+        
+        self.window = window
+        
+        
+    def eventFilter(self, source, event):
+        # Check if the event is a wheel event
+        if event.type() == QEvent.Type.Wheel:
+            self.handle_wheel(event)
+            return True # Tell Qt we handled this event
+        
+        return super().eventFilter(source, event)
+        
+        
+    def on_click(self, mouseClickEvent):
+        ''' link left mouse click to peak selection and quantification '''
         
         if mouseClickEvent.button() == Qt.MouseButton.LeftButton:
             # get raw coordinate of the mouse click
             x_cor = mouseClickEvent.pos()[0]
           
+            
             # adjust the raw coordinate based on where we are in the graph and the size of the window
-            pos_adjusted = self.xpos + ((x_cor / (self.width()) * self.xwindow))
+            pos_adjusted = self.window.xpos + ((x_cor / (self.window.width()) * self.window.xwindow))
             
             # find the closest peak to the mouse click coordinate
-            closest_peak = min(self.ploc, key=lambda x:abs(x-pos_adjusted))
-            where = self.ploc.index(closest_peak)
+            closest_peak = min(self.window.ploc, key=lambda x:abs(x-pos_adjusted))
+            where = self.window.ploc.index(closest_peak)
             
+            self.window.update_quantification_line(where, closest_peak)
             
-            self.update_quantification_line(where, closest_peak)
-            
-    def wheelEvent(self, event):
+            # pass selected peak information to quantification and subsequence windows
+            subseq = self.window.create_subsequence_with_N_at_clicked_position(where)
+            self.window.pass_selected_peak_to_quantification_table(subseq)
+            self.window.pass_selected_peak_to_subsequence_exporter(subseq)
+        
+    
+    def handle_wheel(self, event):
+        ''' move from the trace using the wheel '''
         
         # -- get the number degrees the wheel was rotated -- #
         degrees = round(event.angleDelta().y() / 8, 0)
         degrees = int(degrees)
         steps = degrees * 5
         
+        
         # -- update x-position based on wheel rotation -- #
-        self.xpos = self.main.scrollbar.value() - steps
+        self.window.xpos = self.window.main.scrollbar.value() - steps
         
         # -- move scrollbar and move the plot window -- #
-        self.main.scrollbar.setValue(self.main.scrollbar.value() - steps)
-        self.setXRange(self.xpos, self.xpos + self.xwindow)
+        self.window.main.scrollbar.setValue(self.window.main.scrollbar.value() - steps)
+        self.window.setXRange(self.window.xpos, self.window.xpos + self.window.xwindow)
         event.accept()
     
-        
+
         # -- add sequence to chromatograms -- #
-        if self.display_sequence == False:
-            self.show_sequence.hide_sequence_from_traces()
+        if self.window.display_sequence == False:
+            self.window.show_sequence.hide_sequence_from_traces()
         else:
-            self.show_sequence.show_sequence_from_traces()
-    
-    
-    
-    def pass_selected_peak_to_quantification_table(self, peak_pos):
-        ''' pre-determine the sequence to quantify to the quantification table | peak_pos = selected peak_location '''
-        
-        #self.main.data[selected_sample]["Traces"]
-        pass
-    
+            self.window.show_sequence.show_sequence_from_traces()
     
     
     

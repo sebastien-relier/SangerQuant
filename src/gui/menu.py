@@ -13,7 +13,6 @@ from PyQt6.QtCore import Qt
 import copy
 import os
 from viewsequence import ViewSequence
-from export_quantification import ExportQuantification
 from export_svg import ExportSVG
 from compare_quality import CompareQuality
 from mismatch_whole_seq import QuantifyWholeSeq
@@ -97,7 +96,10 @@ class FileMenu:
             self.main.menubar.activate_actions(True)
             
             
-            print("haha")
+            # add sample names to list widget from the pre-init analysis windows
+            self.main.quantification_transition.sample_list.addItems([x for x in self.main.data.keys()])
+            self.main.subsequence_exporter.sample_list.addItems([x for x in self.main.data.keys()])
+            
             
     def _parse_ab1_file(self, filenames):
         
@@ -392,15 +394,16 @@ class AnalysisMenu:
         self.menu.addAction(self.quantAction)
         self.menu.addAction(self.exportsubseqAction)
     
+        # initialize sub-windows
+        
+    
     def quantify_peak(self):
         
-        self.mm = ExportQuantification(self.main)
-        self.mm.show()
+        self.main.quantification_transition.show()
         
     def export_svg(self):
         
-        self.export_svg = ExportSVG(self.main)
-        self.export_svg.show()
+        self.main.subsequence_exporter.show()
     
     def show_mismatches_across_seq(self):
         
