@@ -381,6 +381,7 @@ class ShowSequence(QWidget):
         self.text_items = []   
         
     def update_text_items(self):
+        ''' write the sequence below the trace '''
         
         font = QFont()
         font.setPixelSize(24)
@@ -404,34 +405,7 @@ class ShowSequence(QWidget):
                 self.trace.addItem(nuc)
                 self.text_items.append(nuc)
                 
-    def center_text_items(self):
-        
-        font = QFont()
-        font.setPixelSize(24)
-      
-        # -- clear label sequence outside the display window -- #
-        if self.text_items != []:
-            
-            for item in self.text_items:
-                
-                self.trace.removeItem(item)
-            
-       
-       # -- write the sequence below the trace -- # 
-        for x, y in zip(self.trace.ploc, self.trace.seq):
-            
-            left = self.trace.xpos - (self.trace.xwindow/2)
-            right = self.trace.xpos + (self.trace.xwindow/2)
-            
-            if (left <= x <= right):
-                
-                nuc = pg.TextItem(text=y, color=rgba["line"][y], anchor=(0.0,0.0))
-                nuc.setPos(x - 2, 10)
-                nuc.setFont(font)
-                
-                self.trace.addItem(nuc)
-                self.text_items.append(nuc)
-
+    
     def show_sequence_from_traces(self):
     
         for item in self.text_items:
