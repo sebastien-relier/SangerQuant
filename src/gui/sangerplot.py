@@ -370,7 +370,7 @@ class QuantificationArea:
         
 class ShowSequence(QWidget):
     
-    ''' CREATE THE SEQUENCES TO DISPLAY ON THE PYQTGRAPH '''
+    ''' CREATE THE NUCLEOTIDE SEQUENCES TO SHOW BELOW THE CHROMATOGRAM PLOT OF THE MAIN WINDOW '''
     
     def __init__(self, trace):
         
@@ -381,7 +381,7 @@ class ShowSequence(QWidget):
         self.text_items = []   
         
     def update_text_items(self):
-        ''' write the sequence below the trace '''
+        ''' write the nucleotide sequence below the sanger trace '''
         
         font = QFont()
         font.setPixelSize(24)
@@ -407,13 +407,15 @@ class ShowSequence(QWidget):
                 
     
     def show_sequence_from_traces(self):
+        ''' display the sequence below the chromatogram plot of the main window '''
     
         for item in self.text_items:
             item.setVisible(True)
     
 
     def hide_sequence_from_traces(self):
-    
+        ''' hide the nucleotide sequence below the chromatogram plot of the main window '''
+        
         for item in self.text_items:
             item.setVisible(False)
 
