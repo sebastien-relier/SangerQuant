@@ -126,6 +126,7 @@ class FileMenu:
         
             self.main.data[name] = tmp 
             
+    
         # create a back-up of the data
         self.main.backup = copy.deepcopy(self.main.data)
         

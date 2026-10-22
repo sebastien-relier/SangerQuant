@@ -6,8 +6,6 @@ Created on Sun Jul 27 12:42:39 2025
 @author: sebastien
 """
 
-
-
 from PyQt6.QtWidgets import QLineEdit
 from PyQt6.QtCore import QRegularExpression
 from PyQt6.QtGui import QRegularExpressionValidator
@@ -15,7 +13,11 @@ import re
 
 class SearchSequence(QLineEdit):
     
-    ''' Search the sequence from Trace '''
+    ''' 
+    - Create a QLinEdit below the Sanger Trace:
+    - The function of this QLineEdit is to search for a specific sequence within the sanger file
+    - If the sequence is found, the plot is automatically updated to show the sequence
+    '''
     
     def __init__(self, main):
     
@@ -37,9 +39,7 @@ class SearchSequence(QLineEdit):
         self.setValidator(validator)
 
     def onChange(self):
-        
-        # -- update the plot to be at the sequence -- #
-        
+        ''' update text each time a letter is entered '''
         
         cursor_pos = self.cursorPosition()    # Save the current cursor position
           
@@ -54,6 +54,7 @@ class SearchSequence(QLineEdit):
         self.control_existence()
             
     def control_existence(self):
+        ''' color the input text in black or red depending on whether the queried sequence is found '''
         
         pos = re.findall(self.main.plot.subseq, self.main.plot.seq)
         

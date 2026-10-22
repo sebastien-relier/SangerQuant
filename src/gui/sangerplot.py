@@ -54,7 +54,7 @@ class SangerTraces(pg.PlotWidget):
         
         
     def _initialize_figure(self):
-        # create the plot and its mouse click options
+        ''' init the plot window and the mouse events '''
         
          # connect the widget to mouse clicking
         self.installEventFilter(self.mouse_handler)
@@ -68,6 +68,7 @@ class SangerTraces(pg.PlotWidget):
         self.getPlotItem().hideAxis("bottom")
        
     def _initialize_parameters(self):
+        ''' init parameters for the plotting and window dimension '''
         
         # -- set parameters for the window of plotting -- #
         self.xmin = -10
@@ -225,7 +226,9 @@ class MouseEvent(QObject):
     left click > peak selection and quantification,
     right click > open context menu to export to svg
     mouse wheel > scroll the plot to visualize
-        
+    
+    window that is passed to the class is the pg.PlotWidget class named SangerTraces (see above)
+    
     '''
     
     def __init__(self, window):
@@ -245,7 +248,7 @@ class MouseEvent(QObject):
         
         
     def on_click(self, mouseClickEvent):
-        ''' link left mouse click to peak selection and quantification '''
+        ''' Link left mouse click to peak selection and quantification '''
         
         if mouseClickEvent.button() == Qt.MouseButton.LeftButton:
             # get raw coordinate of the mouse click
@@ -261,14 +264,19 @@ class MouseEvent(QObject):
             
             self.window.update_quantification_line(where, closest_peak)
             
+            '''
+            MAYBE ADDED IN THE FUTURE - NEED PERFORMANCE IMPROVEMENT AS IT GET THE APPLICATION LAGGY
+            ------------------------------------------------------------------------------------------
+            
             # pass selected peak information to quantification and subsequence windows
             subseq = self.window.create_subsequence_with_N_at_clicked_position(where)
             self.window.pass_selected_peak_to_quantification_table(subseq)
             self.window.pass_selected_peak_to_subsequence_exporter(subseq)
-        
+            
+            '''
     
     def handle_wheel(self, event):
-        ''' move from the trace using the wheel '''
+        ''' Use the mouse wheel to move the window along the trace '''
         
         # -- get the number degrees the wheel was rotated -- #
         degrees = round(event.angleDelta().y() / 8, 0)
