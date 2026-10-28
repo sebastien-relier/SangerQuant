@@ -142,7 +142,6 @@ class ChoosePath(QPushButton):
         self.setIcon(QIcon("://icons/load.png"))
         self.setText("")
         self.setIconSize(self.iconSize())
-        #self.setFixedSize(20, 20) 
         self.clicked.connect(self.open_filedialog)
         
     def open_filedialog(self):
@@ -209,7 +208,7 @@ class SampleList(QListWidget):
         #helper functions
         self.window.preview_table.rename_headers(headers)
         self.window.preview_table.reset_table_values()
-        self.window.preview_table.update_table(data)
+        self.window.preview_table.update_table_for_transition(data)
         
         
     def show_peak_height(self, data):

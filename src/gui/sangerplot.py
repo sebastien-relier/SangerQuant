@@ -49,10 +49,7 @@ class SangerTraces(pg.PlotWidget):
         # change context menu from right click
         self._override_context_menu()
         
-        
     
-        
-        
     def _initialize_figure(self):
         ''' init the plot window and the mouse events '''
         
@@ -97,18 +94,17 @@ class SangerTraces(pg.PlotWidget):
     def create_plot(self):
         ''' create the sanger traces plot to the main window '''
         
-
         # -- set-up anti-aliasing for smooth plot -- #
         pg.setConfigOptions(antialias = self.antialias)
         
         # -- clear any preexisting plot -- #
         self.clear()
     
-        # -- select the dataset corresponding to the selected sample on the filelist -- #
+        ## SELECT DATASET OF THE SELECTED SAMPLE FROM SAMPLELIST
         selected_sample = self.main.samples.selected_sample
         traces = self.main.data[selected_sample]["Traces"]
         
-        # -- create four line plots, each one represents the traces for T,G,C,A nucleobase -- #
+        ## CREATE THE PLOT
         for nuc in traces.keys():
             
             size = len(traces[nuc])
@@ -121,6 +117,9 @@ class SangerTraces(pg.PlotWidget):
             else:
                 self.plot(x = range(size), y= traces[nuc], fillLevel =-0.3, pen=pg.mkPen(line_color, width=2))
           
+        # ---------------------------------------------------------------------------
+        
+        ## CHANGE BASED ON PLOT OPTIONS
         
         # -- add sequence to chromatograms -- #
         if self.display_sequence != False:
@@ -130,7 +129,9 @@ class SangerTraces(pg.PlotWidget):
         if len(self.subseq) > 0:
             self.go_to_subsequence()
         
-        # -- show the graphs -- #
+        # ----------------------------------------------------------------------------
+        
+        ## ADD THE GRAPH TO THE LAYOUT
         self.main.layout_container.grid.addWidget(self, 1,2, 8, 10)      
         self.setXRange(self.xpos, self.xpos + self.xwindow)
 
@@ -174,21 +175,28 @@ class SangerTraces(pg.PlotWidget):
         self.main.scrollbar.setSliderPosition(self.xpos)
         
     def update_quantification_line(self, position, closest_peak):
+        ''' quantify peak height of the select peaks '''
         
         # select the peak to quantification based on the selected position
         # -- create the lines to delimit the plot to quantify -- #
         self.quantification_area.peak_pos = position
         self.quantification_area.define_quantification_area()
 
+
         # -- arrange data to fit the QTable -- #
        
         res = []
+        res_dict = {}
         for nucleotide, value in self.height[closest_peak].items():
             
             res.append([nucleotide, value])
+            res_dict.update({nucleotide:value})
+            
+        
 
         # -- update the quantifiation table -- #
-        self.main.quantification.update_table(data = res)
+        self.main.quantification.data = res_dict
+        self.main.quantification.update_table()
         self.main.quantification.create_row_label()
         
         

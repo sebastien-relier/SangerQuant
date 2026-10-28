@@ -20,10 +20,10 @@ class Layout(QWidget):
         self._create_grid()
     
     
-        
     def _create_grid(self):
        
        self.grid = QGridLayout() # TO FIX THIS BS
        self.setLayout(self.grid)
+      
        
        

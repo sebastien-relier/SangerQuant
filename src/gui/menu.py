@@ -6,7 +6,7 @@ Created on Mon Feb 21 13:08:15 2022
 @author: sebastien
 """
 
-from PyQt6.QtWidgets import QMainWindow, QFileDialog
+from PyQt6.QtWidgets import QMainWindow, QFileDialog, QLabel
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtCore import Qt
 
@@ -135,40 +135,52 @@ class FileMenu:
         ''' create the new widgets upon loading data (i.e: graphic canvas, sample list '''
  
        
-        # -- create the QTable to store the quantification on QMainWindow -- #
+        ## CREATE THE QTABLE OPTIONS TO QUANTIFY SINGLE NUCLEOTIDE AT A TIME (BOTTOM LEFT PANEL)
         self.main.quantification = PeakQuant(self, rowlabel={"G":"black","A":"green","T":"red","C":"blue"})
         self.main.quantification.create_row_label()
-        self.main.layout_container.grid.addWidget(self.main.quantification, 8,0,2,2)
-    
-    
-        # -- create the SampleList -- #
-        self.main.samples = SampleList(self.main)
-        self.main.layout_container.grid.addWidget(self.main.samples, 0,0,8,2)
-       
+        self.main.layout_container.grid.addWidget(self.main.quantification, 7,0,2,2)
         
-        # -- create the scrollbar to move on the graph -- #
+        
+        self.main.layout_container.grid.addWidget(self.main.quantification.show_ratio, 9,0,1,1)
+        self.main.layout_container.grid.addWidget(self.main.quantification.nuc_reference, 9,1,1,1)
+    
+        # -------------------------------------------------
+    
+        ## CREATE THE LIST OF SAMPLES THAT CAN BE SELECTED TO DISPLAY A SINGLE CHROMATOGRAM AT A TIME
+        self.main.samples = SampleList(self.main)
+        self.main.layout_container.grid.addWidget(self.main.samples, 0,0,7,2)
+       
+        # -------------------------------------------------
+        
+        ## CREATE A SCROLLBAR TO MOVE ALONG THE CHROMATOGRAM
         self.main.scrollbar = ScrollBar(self.main)
         self.main.layout_container.grid.addWidget(self.main.scrollbar, 0,2,1,10)
         
-        # -- create the searchbar to seek out sequences -- #
+        # -------------------------------------------------
+        
+        ## CREATE THE SEARCHBAR TO SEARCH FOR A SPECFIC SUBSEQUENCE
         self.main.search = SearchSequence(self.main)
         self.main.layout_container.grid.addWidget(self.main.search, 9,2,1,8)
         
+        # -------------------------------------------------
       
         # -- create QSlider to change width of the traces
         self.trace_width = TraceShape(self.main, minimum=100, maximum=750, interval=50, value=450, connector="width")
         self.main.layout_container.grid.addWidget(self.trace_width, 9,11,1,1)  
         
+        # -------------------------------------------------
         
         # -- create QSlider to change Height of the traces -- #
         self.trace_height = TraceShape(self.main, minimum=1, maximum=8, interval=1, value=5, connector="height")
         self.main.layout_container.grid.addWidget(self.trace_height, 9,10,1,1)
         
+        # -------------------------------------------------
         
-        # -- create the plot layout to add the chromatogram -- #
+        ## CREATE THE PLOT LAYOUT TO SHOW THE CHROMATOGRAM
         self.main.plot = SangerTraces(self.main)
         self.main.layout_container.grid.addWidget(self.main.plot, 1,2, 8, 10)
        
+        # -------------------------------------------------
 
     def export_raw_data(self):
         

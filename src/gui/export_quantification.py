@@ -13,14 +13,7 @@ Created on Sun Apr  7 05:30:28 2024
 # CREATE THE WINDOW TO QUANTIFY MISMATCH FROM A BATCH OF SANGER SEQUENCING SAMPLES
 
 
-
-
-
 ########################################"
-
-
-
-
 # -- IMPORT PACKAGES -- #
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QWidget, QPushButton, QComboBox, QLineEdit, QListWidget, QMessageBox, QAbstractItemView, QGridLayout, QFileDialog
@@ -183,7 +176,6 @@ class Calculator:
         
         # -- extract the values of reference base and target to quantify -- #
         self._get_reference_and_target_base()
-
         self._create_new_header()
 
 
@@ -214,7 +206,7 @@ class Calculator:
             
             self.res.append(transition_list)
     
-        print(transition_value)
+        print(self.res)
         self._update_table() # update the table
          
     def _create_new_header(self):
@@ -314,10 +306,11 @@ class Calculator:
     def _update_table(self):
       ''' update the quantification table to add new header | transition values | and sample names '''
       
+    
       # -- write the results into a QTableWidget -- #
       self.window.results.rename_headers(self.header)
       self.window.results.reset_table_values()
-      self.window.results.update_table(data = self.res)
+      self.window.results.update_table_for_transition(data = self.res)
 
     def find_sequence(self, target_seq, seq):
 
