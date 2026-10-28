@@ -40,10 +40,10 @@ class ExportQuantification(QWidget):
         self.main = main
 
         # Init values
-        self.create_widgets()
-        self.create_layout()
+        self._create_widgets()
+        self._create_layout()
 
-    def create_widgets(self):
+    def _create_widgets(self):
 
         # create list of sample
         self.sample_list = FileList(self, [key for key in self.main.data])
@@ -68,7 +68,7 @@ class ExportQuantification(QWidget):
          # -- create table to store results -- #
         self.results = PeakQuant(self, header = ["Samples", "Mismatch"], nrow = 10, ncol = 2)
         
-    def create_layout(self):
+    def _create_layout(self):
 
         self.layout = QGridLayout(self)
 
@@ -173,7 +173,6 @@ class Calculator:
 
     def on_click(self):
 
-        
         # -- extract the values of reference base and target to quantify -- #
         self._get_reference_and_target_base()
         self._create_new_header()
@@ -190,13 +189,13 @@ class Calculator:
             
                 if pos is not None:
             
-                    peak_values = self.extract_peak_values_at_target_position(sample, pos)
+                    peak_values = self._extract_peak_values_at_target_position(sample, pos)
         
-                    target_value = self.calculate_target_value(peak_values)
+                    target_value = peak_values[self.nucleoside_to_quantify]
             
-                    reference_value = self.calculate_reference_value(peak_values)
+                    reference_value = peak_values[self.reference_nucleoside]
     
-                    transition_value = self.calculate_transition(target_value, reference_value)
+                    transition_value = self._calculate_transition(target_value, reference_value)
                 
                     transition_list.append(transition_value)
                  
@@ -270,7 +269,7 @@ class Calculator:
         
         return pos_list
 
-    def extract_peak_values_at_target_position(self, sample, pos):
+    def _extract_peak_values_at_target_position(self, sample, pos):
 
         #  -- the area under peak or peak height --  #
         if pos is not None:
@@ -280,18 +279,9 @@ class Calculator:
             peak = None
     
         return peak
-
-    def calculate_target_value(self, peak):
-
-       value_of_target = peak[self.nucleoside_to_quantify]
-       return value_of_target
-
-    def calculate_reference_value(self, peak):
-
-        value_of_reference = peak[self.reference_nucleoside]
-        return value_of_reference
-
-    def calculate_transition(self, target, reference):
+    
+    
+    def _calculate_transition(self, target, reference):
         ''' calculate the transition between target and reference base at select ed position '''
 
         if reference == 0 and target == 0:
@@ -304,16 +294,16 @@ class Calculator:
 
     
     def _update_table(self):
-      ''' update the quantification table to add new header | transition values | and sample names '''
+      ''' helper function to update the quantification table'''
       
-    
       # -- write the results into a QTableWidget -- #
       self.window.results.rename_headers(self.header)
       self.window.results.reset_table_values()
       self.window.results.update_table_for_transition(data = self.res)
 
     def find_sequence(self, target_seq, seq):
-
+        ''' method to check the presence of query sequence in sanger file '''
+        
         tmp = re.findall(target_seq, seq)
 
         if len(tmp) > 1:
