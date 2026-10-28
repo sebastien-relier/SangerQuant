@@ -206,7 +206,7 @@ class Calculator:
             
             self.res.append(transition_list)
     
-        print(self.res)
+        
         self._update_table() # update the table
          
     def _create_new_header(self):
