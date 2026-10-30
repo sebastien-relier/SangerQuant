@@ -94,7 +94,7 @@ jobs:
         uses: Nuitka/Nuitka-Action@main
         with:
           script-name: src/gui/app.py
-          standalone: true
+          standalone: false
           enable-plugins: pyqt6,matplotlib,numpy
           output-dir: dist
 
