@@ -1,0 +1,105 @@
+name: Build for Windows, macOS, and Linux
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyqt6 biopython matplotlib pyqtgraph numpy wheel
+
+      - name: Build Windows executable (OneDir)
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          script-name: src/gui/app.py
+          standalone: true
+          windows-console-mode: 'disabled'
+          enable-plugins: pyqt6,matplotlib,numpy
+          output-dir: dist
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-executable-sangerquant
+          path: dist/app.dist/
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyqt6 biopython matplotlib pyqtgraph numpy wheel
+
+      - name: Build macOS app
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          script-name: src/gui/app.py
+          standalone: true
+          macos-create-app-bundle: true
+          enable-plugins: pyqt6,matplotlib,numpy
+          output-dir: dist
+
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-sangerquant
+          path: dist/app.app/
+
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb-xinerama0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-randr0 libxcb-shape0 libxcb-xfixes0 libxcb-xkb1 libxkbcommon-x11-0 patchelf
+          python -m pip install --upgrade pip
+          pip install pyqt6 biopython matplotlib pyqtgraph numpy wheel
+
+      - name: Build Linux executable (OneDir)
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          script-name: src/gui/app.py
+          standalone: true
+          enable-plugins: pyqt6,matplotlib,numpy
+          output-dir: dist
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-executable-sangerquant
+          path: dist/app.dist/
