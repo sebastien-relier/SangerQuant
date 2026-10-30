@@ -1,5 +1,5 @@
 # SangerQuant
-SangerQuant is a Sanger trace viewer and a mismatch quantifier made with PyQt5.  <br> SangerQuant is specifically designed to ensure fast quantification of mismatch rates at any selected position. <br>
+SangerQuant is a Sanger trace viewer and a mismatch quantifier made with PyQt6.  <br> SangerQuant is specifically designed to ensure fast quantification of mismatch rates at any selected position. <br>
 This application supports .ab1 file format as input.
 
 <p align="center">
