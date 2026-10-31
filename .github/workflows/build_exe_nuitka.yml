@@ -57,7 +57,7 @@ jobs:
       - name: Build onefile executable
         run: >
           python -m nuitka
-          --onefile
+          --standalone
           --assume-yes-download
           --output-dir=dist
           --include-data-files=src/gui/assets/=assets/
