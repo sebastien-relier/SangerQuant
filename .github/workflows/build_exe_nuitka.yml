@@ -1,4 +1,4 @@
-name: Build Standalone App
+name: Build Onefile App
 
 on:
   push:
@@ -16,13 +16,16 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            artifact: windows-app
+            artifact: app-windows
+            ext: .exe
             nuitka-options: --windows-console-mode=disable
           - os: macos-latest
-            artifact: macos-app
-            nuitka-options: --macos-create-app-bundle
+            artifact: app-macos
+            ext: .bin
+            nuitka-options: ""
           - os: ubuntu-22.04
-            artifact: linux-app
+            artifact: app-linux
+            ext: .bin
             nuitka-options: ""
 
     steps:
@@ -51,31 +54,19 @@ jobs:
           pip install -r requirements.txt
           pip install nuitka ordered-set zstandard
 
-      - name: Build standalone app
+      - name: Build onefile executable
         run: >
           python -m nuitka
-          --standalone
+          --onefile
           --assume-yes-download
           --output-dir=dist
           --include-data-files=src/gui/assets/=assets/
           ${{ matrix.nuitka-options }}
           src/gui/app.py
 
-      - name: Compress artifact (Linux/Windows)
-        if: runner.os != 'macOS'
-        run: |
-          cd dist/app.dist && tar -czvf ../../${{ matrix.artifact }}.tar.gz .
-        shell: bash
-
-      - name: Compress artifact (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          cd dist && tar -czvf ../${{ matrix.artifact }}.tar.gz app.app
-        shell: bash
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}.tar.gz
+          path: dist/app${{ matrix.ext }}
           retention-days: 14
