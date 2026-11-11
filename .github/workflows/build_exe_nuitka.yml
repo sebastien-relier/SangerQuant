@@ -1,4 +1,5 @@
-name: Build Onefile App
+
+name: Build Onedir App
 
 on:
   push:
@@ -17,15 +18,15 @@ jobs:
         include:
           - os: windows-latest
             artifact: app-windows
-            ext: .exe
+            binary: app.exe
             nuitka-options: --windows-console-mode=disable
           - os: macos-latest
             artifact: app-macos
-            ext: .bin
+            binary: app.bin
             nuitka-options: ""
           - os: ubuntu-22.04
             artifact: app-linux
-            ext: .bin
+            binary: app.bin
             nuitka-options: ""
 
     steps:
@@ -54,19 +55,24 @@ jobs:
           pip install -r requirements.txt
           pip install nuitka ordered-set zstandard
 
-      - name: Build onefile executable
+      - name: Build onedir distribution
         run: >
           python -m nuitka
-          --standalone
+          --onedir
           --assume-yes-download
           --output-dir=dist
           --include-data-files=src/gui/assets/=assets/
           ${{ matrix.nuitka-options }}
           src/gui/app.py
 
+      - name: Package distribution
+        run: |
+          cd dist/app.dist
+          7z a ../app-${{ runner.os }}.zip .
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: dist/app${{ matrix.ext }}
+          path: dist/app-${{ runner.os }}.zip
           retention-days: 14
