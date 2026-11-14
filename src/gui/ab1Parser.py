@@ -10,6 +10,7 @@ Created on Tue Jan 16 16:28:27 2024
 from Bio import SeqIO
 from collections import defaultdict
 import numpy as np
+from scipy.signal import find_peaks
 
 class ab1Parser:
 
@@ -73,23 +74,53 @@ class ab1Parser:
     
 
     def get_peak_heights(self):
-
+        ''' get peak heights method '''
+        
         res = {}
         for pos in self.ploc:
         
+            peak_limit_left ,peak_limit_right = self._get_peak_limit(pos)
+            
             tmp = {}
             for nuc in self.trace:
-                
-                # get peak height of each nucleotide
-                values = self.trace[nuc]
-                tmp[nuc] = values[pos]
-                
-                # get peak area of each nucleotide
             
+                ## Look for subpeak 
+                subset = self.trace[nuc]
+                subset = subset[int(peak_limit_left):int(peak_limit_right)]
+                
+                peaks, _ = find_peaks(subset, height=20)
+                
+                ## calculate peak height
+                if len(peaks) == 0:
+                    tmp[nuc] = self.trace[nuc][pos]
+                else:
+                    tmp[nuc] = subset[peaks[0]] # to double check
+                
             res[pos] = tmp
                 
         return res
         
+    def _get_peak_limit(self, pos):
+        ''' get the limit left and right of the peak '''
+        
+        index = self.ploc.index(pos)
+        
+        if index < 0:
+            # first peak
+            left = self.ploc[0]
+            right = (self.ploc[index + 1] + self.ploc[index]) / 2
+        elif index == len(self.ploc) - 1:
+            # last peak
+            left =  (self.ploc[index - 1] + self.ploc[index]) / 2
+            right = self.ploc[-1]
+        else:
+            # all peaks in between
+            left =  (self.ploc[index - 1] + self.ploc[index]) / 2
+            right = (self.ploc[index + 1] + self.ploc[index]) / 2
+        
+        
+        return left, right
+    
     
     def get_peak_area(self):
         
