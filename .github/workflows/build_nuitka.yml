@@ -61,7 +61,7 @@ jobs:
           --include-qt-plugins=all
           --output-filename=MyApp.exe
           --output-dir=build
-          main.py
+          src/gui/main.py
 
       - name: Build with Nuitka (macOS)
         if: runner.os == 'macOS'
@@ -73,7 +73,7 @@ jobs:
           --enable-plugin=pyside6
           --include-qt-plugins=all
           --output-dir=build
-          main.py
+          src/gui/main.py
 
       - name: Build with Nuitka (Linux)
         if: runner.os == 'Linux'
@@ -85,7 +85,7 @@ jobs:
           --include-qt-plugins=all
           --output-filename=MyApp.bin
           --output-dir=build
-          main.py
+          src/gui/main.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
