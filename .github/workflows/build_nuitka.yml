@@ -1,77 +1,98 @@
-name: Build Onedir App
+
+name: Build PyQt6 App (Nuitka)
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags: ["v*"]
   workflow_dispatch:
 
 jobs:
   build:
-    name: Build ${{ matrix.os }}
+    name: Build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - os: windows-latest
-            artifact: app-windows
-            binary: app.exe
-            nuitka-options: --windows-console-mode=disable
+            artifact: MyApp-Windows
+            binary: MyApp.exe
           - os: macos-latest
-            artifact: app-macos
-            binary: app.bin
-            nuitka-options: ""
-          - os: ubuntu-22.04
-            artifact: app-linux
-            binary: app.bin
-            nuitka-options: ""
+            artifact: MyApp-macOS
+            binary: MyApp.app
+          - os: ubuntu-latest
+            artifact: MyApp-Linux
+            binary: MyApp.bin
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
 
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            libxcb-xinerama0 libxcb-icccm4 libxcb-image0 \
-            libxcb-keysyms1 libxcb-render-util0 libxcb-randr0 \
-            libxcb-shape0 libxcb-xfixes0 libxcb-xkb1 \
-            libxkbcommon-x11-0 patchelf ccache
+            libgl1 libegl1 libxkbcommon0 libxkbcommon-x11-0 \
+            libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-randr0 libxcb-render-util0 libxcb-shape0 \
+            libxcb-xinerama0 libxcb-cursor0 libdbus-1-3 \
+            libfontconfig1 libfuse2 patchelf ccache
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install nuitka ordered-set zstandard
+          pip install nuitka
 
-      - name: Build onedir distribution
+      - name: Build with Nuitka (Windows)
+        if: runner.os == 'Windows'
         run: >
           python -m nuitka
           --standalone
-          --assume-yes-for-downloads
-          --output-dir=dist
-          --include-data-dir=src/gui/icons=icons
-          ${{ matrix.nuitka-options }}
-          src/gui/app.py
+          --onefile
+          --windows-console-mode=disable
+          --windows-icon-from-ico=assets/icon.ico
+          --enable-plugin=pyside6
+          --include-qt-plugins=all
+          --output-filename=MyApp.exe
+          --output-dir=build
+          main.py
 
-      - name: Package distribution
-        run: |
-          cd dist/app.dist
-          7z a ../app-${{ runner.os }}.zip .
+      - name: Build with Nuitka (macOS)
+        if: runner.os == 'macOS'
+        run: >
+          python -m nuitka
+          --macos-create-app-bundle
+          --macos-app-name=MyApp
+          --macos-app-icon=assets/icon.icns
+          --enable-plugin=pyside6
+          --include-qt-plugins=all
+          --output-dir=build
+          main.py
+
+      - name: Build with Nuitka (Linux)
+        if: runner.os == 'Linux'
+        run: >
+          python -m nuitka
+          --standalone
+          --onefile
+          --enable-plugin=pyside6
+          --include-qt-plugins=all
+          --output-filename=MyApp.bin
+          --output-dir=build
+          main.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: dist/app-${{ runner.os }}.zip
-          retention-days: 14
+          path: |
+            build/MyApp.exe
+            build/MyApp.app/**
+            build/MyApp.bin
+          if-no-files-found: error
