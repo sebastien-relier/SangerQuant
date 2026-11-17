@@ -57,7 +57,7 @@ jobs:
       - name: Build onedir distribution
         run: >
           python -m nuitka
-          --onedir
+          --standalone
           --assume-yes-download
           --output-dir=dist
           --include-data-files=src/gui/assets/=assets/
