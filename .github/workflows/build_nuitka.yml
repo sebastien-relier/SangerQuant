@@ -58,7 +58,7 @@ jobs:
         run: >
           python -m nuitka
           --standalone
-          --assume-yes-downloads
+          --assume-yes-for-downloads
           --output-dir=dist
           --include-data-files=src/gui/assets/=assets/
           ${{ matrix.nuitka-options }}
