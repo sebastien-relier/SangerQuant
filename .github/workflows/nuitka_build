@@ -5,7 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build:
@@ -17,13 +17,10 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact-name: SangerQuant-Linux
-            shell: bash
           - os: windows-latest
             artifact-name: SangerQuant-Windows
-            shell: bash # Use bash on Windows for universal syntax
           - os: macos-latest
             artifact-name: SangerQuant-MacOS
-            shell: bash
 
     steps:
       - name: Checkout Source Code
@@ -33,7 +30,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip' # Speeds up Python package downloads
+          cache: 'pip'
 
       - name: Install System Dependencies (Linux Only)
         if: matrix.os == 'ubuntu-latest'
@@ -47,10 +44,8 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install nuitka
 
-      # ---------------------------------------------------------------
-      # NUITKA BUILD CACHE CONFIGURATION
-      # ---------------------------------------------------------------
       - name: Setup Nuitka Cache Environment
+        shell: bash
         run: |
           if [ "${{ matrix.os }}" = "windows-latest" ]; then
             echo "NUITKA_CACHE_DIR=${{ github.workspace }}\.nuitka-cache" >> $GITHUB_ENV
@@ -62,12 +57,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.NUITKA_CACHE_DIR }}
-          # The key combines OS and requirements to ensure exact tracking
           key: ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-${{ github.run_id }}
           restore-keys: |
             ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-
             ${{ runner.os }}-nuitka-
-      # ---------------------------------------------------------------
 
       - name: Build Executable with Nuitka
         run: |
@@ -87,12 +80,13 @@ jobs:
 
       - name: Prepare Artifacts (Windows)
         if: matrix.os == 'windows-latest'
+        shell: bash
         run: |
           mkdir -p dist_release
           mv main.exe dist_release/SangerQuant.exe
 
       - name: Upload Binary Artifact
-        uses: actions/artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
           path: dist_release/
