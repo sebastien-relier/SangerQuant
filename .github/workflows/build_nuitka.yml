@@ -42,7 +42,6 @@ jobs:
         shell: bash
 
       - name: Setup Ccache (Speed up compilation)
-        uses: chbndrhnns/ccache-action@v1.2
         with:
           key: ${{ matrix.os }}-${{ matrix.mode }}
 
