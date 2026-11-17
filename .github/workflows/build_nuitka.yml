@@ -60,6 +60,7 @@ jobs:
           --standalone
           --assume-yes-for-downloads
           --output-dir=dist
+          --include-data-dir=src/gui/icons=icons
           ${{ matrix.nuitka-options }}
           src/gui/app.py
 
