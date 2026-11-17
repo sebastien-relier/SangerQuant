@@ -1,0 +1,99 @@
+name: Build SangerQuant Executables
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact-name: SangerQuant-Linux
+            shell: bash
+          - os: windows-latest
+            artifact-name: SangerQuant-Windows
+            shell: bash # Use bash on Windows for universal syntax
+          - os: macos-latest
+            artifact-name: SangerQuant-MacOS
+            shell: bash
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip' # Speeds up Python package downloads
+
+      - name: Install System Dependencies (Linux Only)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libegl1-mesa-dev libxkbcommon-dev libglu1-mesa
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install nuitka
+
+      # ---------------------------------------------------------------
+      # NUITKA BUILD CACHE CONFIGURATION
+      # ---------------------------------------------------------------
+      - name: Setup Nuitka Cache Environment
+        run: |
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            echo "NUITKA_CACHE_DIR=${{ github.workspace }}\.nuitka-cache" >> $GITHUB_ENV
+          else
+            echo "NUITKA_CACHE_DIR=${{ github.workspace }}/.nuitka-cache" >> $GITHUB_ENV
+          fi
+
+      - name: Restore Nuitka Build Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NUITKA_CACHE_DIR }}
+          # The key combines OS and requirements to ensure exact tracking
+          key: ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-
+            ${{ runner.os }}-nuitka-
+      # ---------------------------------------------------------------
+
+      - name: Build Executable with Nuitka
+        run: |
+          python -m nuitka \
+            --standalone \
+            --onefile \
+            --enable-plugin=pyqt6 \
+            --include-data-dir=icons=icons \
+            --summary=on \
+            src/main.py
+
+      - name: Prepare Artifacts (Linux/MacOS)
+        if: matrix.os != 'windows-latest'
+        run: |
+          mkdir -p dist_release
+          mv main dist_release/SangerQuant
+
+      - name: Prepare Artifacts (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          mkdir -p dist_release
+          mv main.exe dist_release/SangerQuant.exe
+
+      - name: Upload Binary Artifact
+        uses: actions/artifacts@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: dist_release/
+          retention-days: 5
