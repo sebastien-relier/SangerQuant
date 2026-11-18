@@ -73,7 +73,7 @@ jobs:
             --onefile \
             --enable-plugin=pyqt6 \
             --include-data-dir=icons=icons \
-            -o dist_release/sangerquant.exe
+            -o dist_release/sangerquant.exe \
             src/gui/app.py
 
       - name: Upload Binary Artifact
