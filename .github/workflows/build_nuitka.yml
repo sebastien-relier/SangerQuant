@@ -76,7 +76,7 @@ jobs:
             --enable-plugin=pyqt6 \
             --include-data-dir=icons=icons \
             --assume-yes-for-downloads \
-            -o dist_release/sangerquant.exe \
+            -o sangerquant \
             src/gui/app.py
 
       - name: Upload Binary Artifact
