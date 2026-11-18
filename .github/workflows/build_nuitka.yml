@@ -72,7 +72,7 @@ jobs:
             --onefile \
             --enable-plugin=pyqt6 \
             --include-data-dir=icons=icons \
-            src/gui/main.py
+            src/gui/app.py
 
       - name: Prepare Artifacts (Linux/MacOS)
         if: matrix.os != 'windows-latest'
