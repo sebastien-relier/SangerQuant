@@ -70,7 +70,9 @@ jobs:
           mkdir -p dist_release
           python -m nuitka \
             --standalone \
-            --onefile \
+            --lto=yes \
+            --enable-plugin=anti-bloat \
+            --python-flag=no_site \
             --enable-plugin=pyqt6 \
             --include-data-dir=icons=icons \
             --assume-yes-for-downloads \
