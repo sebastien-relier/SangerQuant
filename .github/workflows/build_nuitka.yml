@@ -64,6 +64,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-
             ${{ runner.os }}-nuitka-
+            
+       - name: Install Dependency Walker for Nuitka
+         uses: onesoftqwq/dependency-walker-installer@v1.0
       
       - name: Build Executable with Nuitka
         run: |
