@@ -17,10 +17,13 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact-name: SangerQuant-Linux
+            binary-path: app.dist/
           - os: windows-latest
             artifact-name: SangerQuant-Windows
+            binary-path: app.dist/
           - os: macos-latest
             artifact-name: SangerQuant-MacOS
+            binary-path: app.dist/
 
     defaults:
       run:
@@ -76,12 +79,11 @@ jobs:
             --enable-plugin=pyqt6 \
             --include-data-dir=icons=icons \
             --assume-yes-for-downloads \
-            -o sangerquant \
             src/gui/app.py
 
       - name: Upload Binary Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: ${{ matrix.nuitka-dist }}
+          path: ${{ matrix.binary-path }}
           retention-days: 5
