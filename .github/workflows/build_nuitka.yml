@@ -78,13 +78,13 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: |
           mkdir -p dist_release
-          mv main dist_release/SangerQuant
+          mv app dist_release/SangerQuant
 
       - name: Prepare Artifacts (Windows)
         if: matrix.os == 'windows-latest'
         run: |
           mkdir -p dist_release
-          mv main.exe dist_release/SangerQuant.exe
+          mv app.exe dist_release/SangerQuant.exe
 
       - name: Upload Binary Artifact
         uses: actions/upload-artifact@v4
