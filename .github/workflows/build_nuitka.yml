@@ -83,5 +83,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact-name }}
-          path: sangerquant
+          path: ${{ matrix.nuitka-dist }}
           retention-days: 5
