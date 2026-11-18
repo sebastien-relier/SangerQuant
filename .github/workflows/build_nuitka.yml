@@ -27,6 +27,9 @@ jobs:
         shell: bash
 
     steps:
+      - name: Install Dependency Walker for Nuitka
+        uses: onesoftqwq/dependency-walker-installer@v1.0
+        
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
@@ -65,9 +68,6 @@ jobs:
             ${{ runner.os }}-nuitka-${{ hashFiles('requirements.txt') }}-
             ${{ runner.os }}-nuitka-
             
-       - name: Install Dependency Walker for Nuitka
-         uses: onesoftqwq/dependency-walker-installer@v1.0
-      
       - name: Build Executable with Nuitka
         run: |
           mkdir -p dist_release
