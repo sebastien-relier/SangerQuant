@@ -23,6 +23,19 @@ However, existing software tools are limited to Sanger trace visualization and b
 - Subset Traces and export into svg format for quick embedding into scientific articles
 
 # Installation
+## Installing SangerQuant Using Requirements File
+
+### 1. Clone the repository
+git clone https://github.com/sebastien-relier/SangerQuant
+cd SangerQuant
+
+### 2. Install SangerQuant from the Requirements File using Pip
+pip install -r requirements.txt
+
+### 3. Launch SangerQuant
+python ./src/gui/app.py
+
+
 ## Linux
 This app is available as a standalone executable. Download the sangerquant zip folder [here](https://github.com/sebastien-relier/SangerQuant/releases/tag/v1.0.0)
 
